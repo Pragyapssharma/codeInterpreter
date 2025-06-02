@@ -49,6 +49,16 @@ public class Main {
                         System.out.println("BANG ! null");
                     }
                     break;
+                case '/':
+                    if (i + 1 < fileContents.length() && fileContents.charAt(i + 1) == '/') {
+                        // Ignore everything after "//" until a newline
+                        while (i < fileContents.length() && fileContents.charAt(i) != '\n') {
+                            i++;
+                        }
+                    } else {
+                        System.out.println("SLASH / null");
+                    }
+                    break;
                 case '(':
                     System.out.println("LEFT_PAREN ( null");
                     break;
