@@ -73,6 +73,29 @@ public class Main {
                     System.err.println("[line " + lineNumber + "] Error: Unexpected character: " + c);
                     hasError = true;
                     break;
+                case '"': {
+                    int start = i;
+                    i++; // Move past opening quote
+                    while (i < fileContents.length() && fileContents.charAt(i) != '"') {
+                        if (fileContents.charAt(i) == '\n') {
+                            lineNumber++; // Keep track of new lines inside strings
+                        }
+                        i++;
+                    }
+
+                    // Unterminated string error
+                    if (i >= fileContents.length()) {
+                        System.err.println("[line " + lineNumber + "] Error: Unterminated string.");
+                        hasError = true;
+                    } else {
+                        // Extract string lexeme and literal
+                        String lexeme = fileContents.substring(start, i + 1);
+                        String literal = fileContents.substring(start + 1, i);
+                        System.out.println("STRING " + lexeme + " " + literal);
+                        i++; // Skip closing quote
+                    }
+                    break;
+                }
                 case '(':
                     System.out.println("LEFT_PAREN ( null");
                     break;
