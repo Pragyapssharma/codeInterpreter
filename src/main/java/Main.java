@@ -61,9 +61,17 @@ public class Main {
                         while (i < fileContents.length() && fileContents.charAt(i) != '\n') {
                             i++;
                         }
+                        lineNumber++; // Ensure we increment the line after skipping the comment
                     } else {
                         System.out.println("SLASH / null");
                     }
+                    break;
+                case '#':
+                case '@':
+                case '$':
+                case '%':
+                    System.err.println("[line " + lineNumber + "] Error: Unexpected character: " + c);
+                    hasError = true;
                     break;
                 case '(':
                     System.out.println("LEFT_PAREN ( null");
@@ -110,13 +118,6 @@ public class Main {
                     } else {
                         System.out.println("GREATER > null");
                     }
-                    break;
-                case '@':
-                case '$':
-                case '#':
-                case '%':
-                	System.err.println("[line " + lineNumber + "] Error: Unexpected character: " + c);
-                    hasError = true;
                     break;
                 default:
                     // Ignore other characters for now
