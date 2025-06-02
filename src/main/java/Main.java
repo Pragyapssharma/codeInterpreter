@@ -72,6 +72,9 @@ public class Main {
                     System.err.println("[line " + lineNumber + "] Error: Unexpected character: " + c);
                     hasError = true;
                     break;
+                case '+':
+                    System.out.println("PLUS + null");
+                    break;
                 case '"': {
                     int start = i;
                     i++;
@@ -113,9 +116,6 @@ public class Main {
                     break;
                 case '-':
                     System.out.println("MINUS - null");
-                    break;
-                case '+':
-                    System.out.println("PLUS + null");
                     break;
                 case ';':
                     System.out.println("SEMICOLON ; null");
