@@ -64,6 +64,7 @@ public class Main {
                 case '@':
                 case '$':
                 case '#':
+                case '%':
                     System.err.println("[line 1] Error: Unexpected character: " + c);
                     hasError = true;
                     break;
