@@ -84,7 +84,7 @@ public class Main {
             }
         }
 
-        System.out.println("EOF null");
+        System.out.println("EOF  null");
 
         if (hasError) {
             System.exit(65); // Exit with error code 65 if invalid tokens were found
