@@ -32,9 +32,9 @@ public class Main {
 
         for (int i = 0; i < fileContents.length(); i++) {
             char c = fileContents.charAt(i);
-            
+
             if (c == '\n') {
-                lineNumber++;  // Increment line number for new lines
+                lineNumber++;
                 continue;
             }
 
@@ -42,7 +42,7 @@ public class Main {
                 case '=':
                     if (i + 1 < fileContents.length() && fileContents.charAt(i + 1) == '=') {
                         System.out.println("EQUAL_EQUAL == null");
-                        i++; // Skip the next character
+                        i++; 
                     } else {
                         System.out.println("EQUAL = null");
                     }
@@ -50,18 +50,16 @@ public class Main {
                 case '!':
                     if (i + 1 < fileContents.length() && fileContents.charAt(i + 1) == '=') {
                         System.out.println("BANG_EQUAL != null");
-                        i++; // Skip next character
+                        i++;
                     } else {
                         System.out.println("BANG ! null");
                     }
                     break;
                 case '/':
                     if (i + 1 < fileContents.length() && fileContents.charAt(i + 1) == '/') {
-                        // Ignore everything after "//" until a newline
                         while (i < fileContents.length() && fileContents.charAt(i) != '\n') {
                             i++;
                         }
-                        lineNumber++; // Ensure we increment the line after skipping the comment
                     } else {
                         System.out.println("SLASH / null");
                     }
@@ -75,24 +73,22 @@ public class Main {
                     break;
                 case '"': {
                     int start = i;
-                    i++; // Move past opening quote
+                    i++;
                     while (i < fileContents.length() && fileContents.charAt(i) != '"') {
                         if (fileContents.charAt(i) == '\n') {
-                            lineNumber++; // Keep track of new lines inside strings
+                            lineNumber++;
                         }
                         i++;
                     }
 
-                    // Unterminated string error
-                    if (i >= fileContents.length()) {
+                    if (i >= fileContents.length()) {  // Fix: Check before incrementing
                         System.err.println("[line " + lineNumber + "] Error: Unterminated string.");
                         hasError = true;
                     } else {
-                        // Extract string lexeme and literal
                         String lexeme = fileContents.substring(start, i + 1);
                         String literal = fileContents.substring(start + 1, i);
                         System.out.println("STRING " + lexeme + " " + literal);
-                        i++; // Skip closing quote
+                        i++; 
                     }
                     break;
                 }
@@ -129,7 +125,7 @@ public class Main {
                 case '<':
                     if (i + 1 < fileContents.length() && fileContents.charAt(i + 1) == '=') {
                         System.out.println("LESS_EQUAL <= null");
-                        i++; // Skip next character
+                        i++; 
                     } else {
                         System.out.println("LESS < null");
                     }
@@ -137,13 +133,12 @@ public class Main {
                 case '>':
                     if (i + 1 < fileContents.length() && fileContents.charAt(i + 1) == '=') {
                         System.out.println("GREATER_EQUAL >= null");
-                        i++; // Skip next character
+                        i++; 
                     } else {
                         System.out.println("GREATER > null");
                     }
                     break;
                 default:
-                    // Ignore other characters for now
                     break;
             }
         }
@@ -151,9 +146,9 @@ public class Main {
         System.out.println("EOF  null");
 
         if (hasError) {
-            System.exit(65); // Exit with error code 65 if invalid tokens were found
+            System.exit(65);
         } else {
-            System.exit(0); // Normal exit
+            System.exit(0);
         }
     }
 }
