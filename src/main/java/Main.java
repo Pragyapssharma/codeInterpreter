@@ -81,7 +81,7 @@ public class Main {
                         i++;
                     }
 
-                    if (i >= fileContents.length()) {  // Fix: Check before incrementing
+                    if (i >= fileContents.length() || fileContents.charAt(i) != '"') { 
                         System.err.println("[line " + lineNumber + "] Error: Unterminated string.");
                         hasError = true;
                     } else {
