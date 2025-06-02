@@ -41,6 +41,14 @@ public class Main {
                         System.out.println("EQUAL = null");
                     }
                     break;
+                case '!':
+                    if (i + 1 < fileContents.length() && fileContents.charAt(i + 1) == '=') {
+                        System.out.println("BANG_EQUAL != null");
+                        i++; // Skip next character
+                    } else {
+                        System.out.println("BANG ! null");
+                    }
+                    break;
                 case '(':
                     System.out.println("LEFT_PAREN ( null");
                     break;
