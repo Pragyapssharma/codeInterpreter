@@ -61,6 +61,7 @@ public class Main {
                 case '*':
                     System.out.println("STAR * null");
                     break;
+                case '@':
                 case '$':
                 case '#':
                     System.err.println("[line 1] Error: Unexpected character: " + c);
