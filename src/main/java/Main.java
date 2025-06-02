@@ -27,7 +27,7 @@ public class Main {
             System.exit(1);
         }
 
-        // **Tokenizing Parentheses and Braces**
+        // **Tokenizing Single-Character Symbols**
         for (char c : fileContents.toCharArray()) {
             switch (c) {
                 case '(':
@@ -41,6 +41,24 @@ public class Main {
                     break;
                 case '}':
                     System.out.println("RIGHT_BRACE } null");
+                    break;
+                case ',':
+                    System.out.println("COMMA , null");
+                    break;
+                case '.':
+                    System.out.println("DOT . null");
+                    break;
+                case '-':
+                    System.out.println("MINUS - null");
+                    break;
+                case '+':
+                    System.out.println("PLUS + null");
+                    break;
+                case ';':
+                    System.out.println("SEMICOLON ; null");
+                    break;
+                case '*':
+                    System.out.println("STAR * null");
                     break;
                 default:
                     // Ignore other characters for now
