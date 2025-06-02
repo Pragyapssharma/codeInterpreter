@@ -27,7 +27,8 @@ public class Main {
             System.exit(1);
         }
 
-        // **Tokenizing Single-Character Symbols**
+        boolean hasError = false;
+        
         for (char c : fileContents.toCharArray()) {
             switch (c) {
                 case '(':
@@ -60,12 +61,23 @@ public class Main {
                 case '*':
                     System.out.println("STAR * null");
                     break;
+                case '$':
+                case '#':
+                    System.err.println("[line 1] Error: Unexpected character: " + c);
+                    hasError = true;
+                    break;
                 default:
                     // Ignore other characters for now
                     break;
             }
         }
 
-        System.out.println("EOF  null"); // End of file indicator
+        System.out.println("EOF  null");
+
+        if (hasError) {
+            System.exit(65); // Exit with error code 65 if invalid tokens were found
+        } else {
+            System.exit(0); // Normal exit
+        }
     }
 }
