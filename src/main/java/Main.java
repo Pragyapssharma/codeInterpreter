@@ -79,6 +79,22 @@ public class Main {
                 case '*':
                     System.out.println("STAR * null");
                     break;
+                case '<':
+                    if (i + 1 < fileContents.length() && fileContents.charAt(i + 1) == '=') {
+                        System.out.println("LESS_EQUAL <= null");
+                        i++; // Skip next character
+                    } else {
+                        System.out.println("LESS < null");
+                    }
+                    break;
+                case '>':
+                    if (i + 1 < fileContents.length() && fileContents.charAt(i + 1) == '=') {
+                        System.out.println("GREATER_EQUAL >= null");
+                        i++; // Skip next character
+                    } else {
+                        System.out.println("GREATER > null");
+                    }
+                    break;
                 case '@':
                 case '$':
                 case '#':
