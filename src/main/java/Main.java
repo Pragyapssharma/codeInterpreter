@@ -28,9 +28,15 @@ public class Main {
         }
 
         boolean hasError = false;
+        int lineNumber = 1;
 
         for (int i = 0; i < fileContents.length(); i++) {
             char c = fileContents.charAt(i);
+            
+            if (c == '\n') {
+                lineNumber++;  // Increment line number for new lines
+                continue;
+            }
 
             switch (c) {
                 case '=':
@@ -109,7 +115,7 @@ public class Main {
                 case '$':
                 case '#':
                 case '%':
-                    System.err.println("[line 1] Error: Unexpected character: " + c);
+                	System.err.println("[line " + lineNumber + "] Error: Unexpected character: " + c);
                     hasError = true;
                     break;
                 default:
