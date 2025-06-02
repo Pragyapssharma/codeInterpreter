@@ -27,6 +27,7 @@ public class Main {
             System.exit(1);
         }
 
+        // **Tokenizing Parentheses and Braces**
         for (char c : fileContents.toCharArray()) {
             switch (c) {
                 case '(':
@@ -34,6 +35,12 @@ public class Main {
                     break;
                 case ')':
                     System.out.println("RIGHT_PAREN ) null");
+                    break;
+                case '{':
+                    System.out.println("LEFT_BRACE { null");
+                    break;
+                case '}':
+                    System.out.println("RIGHT_BRACE } null");
                     break;
                 default:
                     // Ignore other characters for now
