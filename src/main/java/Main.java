@@ -28,9 +28,19 @@ public class Main {
         }
 
         boolean hasError = false;
-        
-        for (char c : fileContents.toCharArray()) {
+
+        for (int i = 0; i < fileContents.length(); i++) {
+            char c = fileContents.charAt(i);
+
             switch (c) {
+                case '=':
+                    if (i + 1 < fileContents.length() && fileContents.charAt(i + 1) == '=') {
+                        System.out.println("EQUAL_EQUAL == null");
+                        i++; // Skip the next character
+                    } else {
+                        System.out.println("EQUAL = null");
+                    }
+                    break;
                 case '(':
                     System.out.println("LEFT_PAREN ( null");
                     break;
@@ -74,7 +84,7 @@ public class Main {
             }
         }
 
-        System.out.println("EOF  null");
+        System.out.println("EOF null");
 
         if (hasError) {
             System.exit(65); // Exit with error code 65 if invalid tokens were found
