@@ -60,6 +60,7 @@ public class Main {
                         while (i < fileContents.length() && fileContents.charAt(i) != '\n') {
                             i++;
                         }
+                        lineNumber++;
                     } else {
                         System.out.println("SLASH / null");
                     }
@@ -81,7 +82,7 @@ public class Main {
                         i++;
                     }
 
-                    if (i >= fileContents.length() || fileContents.charAt(i) != '"') { 
+                    if (i >= fileContents.length()) { 
                         System.err.println("[line " + lineNumber + "] Error: Unterminated string.");
                         hasError = true;
                     } else {
