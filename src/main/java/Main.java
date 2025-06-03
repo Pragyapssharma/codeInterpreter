@@ -318,8 +318,9 @@ public class Main {
         for (Token token : tokens) {
             if (token.type != TokenType.EOF) {
                 System.out.println(token.type + " " + token.lexeme + " " + token.literal);
+            } else {
+                System.out.println("EOF  null");
             }
         }
-        System.out.println("EOF  null");
     }
 }
