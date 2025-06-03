@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
@@ -29,6 +30,7 @@ public class Main {
 
         boolean hasError = false;
         int lineNumber = 1;
+        final Map<String, String> keywords = Map.of("if", "IF", "else", "ELSE", "while", "WHILE", "return", "RETURN", "for", "FOR", "class", "CLASS");
 
         for (int i = 0; i < fileContents.length(); i++) {
             char c = fileContents.charAt(i);
@@ -160,12 +162,6 @@ public class Main {
                     i--;
                     break;
                 }
-             // Define reserved keywords
-                private static final Map<String, String> keywords = Map.of(
-                    "if", "IF", "else", "ELSE", "while", "WHILE",
-                    "return", "RETURN", "for", "FOR", "class", "CLASS"
-                );
-
                 case 'a': case 'b': case 'c': case 'd': case 'e': case 'f':
                 case 'g': case 'h': case 'i': case 'j': case 'k': case 'l':
                 case 'm': case 'n': case 'o': case 'p': case 'q': case 'r':
