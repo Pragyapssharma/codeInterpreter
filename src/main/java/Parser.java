@@ -49,7 +49,9 @@ class Parser {
             }
             return lexeme;
         } else if (match(TokenType.STRING)) {
-            return previous().lexeme; 
+            // Remove the quotes from the string literal
+            String lexeme = previous().lexeme;
+            return lexeme.substring(1, lexeme.length() - 1);
         } else if (match(TokenType.TRUE)) {
             return "true";
         } else if (match(TokenType.FALSE)) {
