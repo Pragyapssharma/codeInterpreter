@@ -88,12 +88,10 @@ public class Main {
                     if (i >= fileContents.length()) { 
                         System.err.println("[line " + lineNumber + "] Error: Unterminated string.");
                         hasError = true;
-                        break;
                     } else {
                         String lexeme = fileContents.substring(start, i + 1);
                         String literal = fileContents.substring(start + 1, i);
                         System.out.println("STRING " + lexeme + " " + literal);
-                        i++; 
                     }
                     break;
                 }
