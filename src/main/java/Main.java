@@ -246,22 +246,22 @@ public class Main {
         lineNumber = 1;
 
         final Map<String, TokenType> keywords = Map.ofEntries(
-            new AbstractMap.SimpleEntry<>("and", TokenType.AND),
-            new AbstractMap.SimpleEntry<>("class", TokenType.CLASS),
-            new AbstractMap.SimpleEntry<>("else", TokenType.ELSE),
-            new AbstractMap.SimpleEntry<>("false", TokenType.FALSE),
-            new AbstractMap.SimpleEntry<>("for", TokenType.FOR),
-            new AbstractMap.SimpleEntry<>("fun", TokenType.FUN),
-            new AbstractMap.SimpleEntry<>("if", TokenType.IF),
-            new AbstractMap.SimpleEntry<>("nil", TokenType.NIL),
-            new AbstractMap.SimpleEntry<>("or", TokenType.OR),
-            new AbstractMap.SimpleEntry<>("print", TokenType.PRINT),
-            new AbstractMap.SimpleEntry<>("return", TokenType.RETURN),
-            new AbstractMap.SimpleEntry<>("super", TokenType.SUPER),
-            new AbstractMap.SimpleEntry<>("this", TokenType.THIS),
-            new AbstractMap.SimpleEntry<>("true", TokenType.TRUE),
-            new AbstractMap.SimpleEntry<>("var", TokenType.VAR),
-            new AbstractMap.SimpleEntry<>("while", TokenType.WHILE)
+                Map.entry("and", TokenType.AND),
+                Map.entry("class", TokenType.CLASS),
+                Map.entry("else", TokenType.ELSE),
+                Map.entry("false", TokenType.FALSE),
+                Map.entry("for", TokenType.FOR),
+                Map.entry("fun", TokenType.FUN),
+                Map.entry("if", TokenType.IF),
+                Map.entry("nil", TokenType.NIL),
+                Map.entry("or", TokenType.OR),
+                Map.entry("print", TokenType.PRINT),
+                Map.entry("return", TokenType.RETURN),
+                Map.entry("super", TokenType.SUPER),
+                Map.entry("this", TokenType.THIS),
+                Map.entry("true", TokenType.TRUE),
+                Map.entry("var", TokenType.VAR),
+                Map.entry("while", TokenType.WHILE)
         );
 
         for (int i = 0; i < fileContents.length(); i++) {
@@ -276,80 +276,126 @@ public class Main {
                 continue;
             }
 
-            if (Character.isDigit(c)) {
-                int start = i;
-                while (i + 1 < fileContents.length() && Character.isDigit(fileContents.charAt(i + 1))) {
-                    i++;
-                }
-                String lexeme = fileContents.substring(start, i + 1);
-                tokens.add(new Token(TokenType.NUMBER, lexeme, Double.parseDouble(lexeme)));
-            } else if (Character.isLetter(c)) {
-                int start = i;
-                while (i + 1 < fileContents.length() && (Character.isLetterOrDigit(fileContents.charAt(i + 1)) || fileContents.charAt(i + 1) == '_')) {
-                    i++;
-                }
-                String lexeme = fileContents.substring(start, i + 1);
-                TokenType type = keywords.getOrDefault(lexeme, TokenType.IDENTIFIER);
-                tokens.add(new Token(type, lexeme, null));
-            } else {
-                switch (c) {
-                    case '+':
-                        tokens.add(new Token(TokenType.PLUS, "+", null));
-                        break;
-                    case '-':
-                        tokens.add(new Token(TokenType.MINUS, "-", null));
-                        break;
-                    case '*':
-                        tokens.add(new Token(TokenType.STAR, "*", null));
-                        break;
-                    case '(':
-                        tokens.add(new Token(TokenType.LEFT_PAREN, "(", null));
-                        break;
-                    case ')':
-                        tokens.add(new Token(TokenType.RIGHT_PAREN, ")", null));
-                        break;
-                    case '"': {
-                        int start = i;
+            switch (c) {
+                case '+':
+                    tokens.add(new Token(TokenType.PLUS, "+", null));
+                    break;
+                case '-':
+                    tokens.add(new Token(TokenType.MINUS, "-", null));
+                    break;
+                case '*':
+                    tokens.add(new Token(TokenType.STAR, "*", null));
+                    break;
+                case '(':
+                    tokens.add(new Token(TokenType.LEFT_PAREN, "(", null));
+                    break;
+                case ')':
+                    tokens.add(new Token(TokenType.RIGHT_PAREN, ")", null));
+                    break;
+                case '{':
+                    tokens.add(new Token(TokenType.LEFT_BRACE, "{", null));
+                    break;
+                case '}':
+                    tokens.add(new Token(TokenType.RIGHT_BRACE, "}", null));
+                    break;
+                case ',':
+                    tokens.add(new Token(TokenType.COMMA, ",", null));
+                    break;
+                case '.':
+                    tokens.add(new Token(TokenType.DOT, ".", null));
+                    break;
+                case ';':
+                    tokens.add(new Token(TokenType.SEMICOLON, ";", null));
+                    break;
+                case '=':
+                    if (i + 1 < fileContents.length() && fileContents.charAt(i + 1) == '=') {
+                        tokens.add(new Token(TokenType.EQUAL_EQUAL, "==", null));
                         i++;
-                        while (i < fileContents.length() && fileContents.charAt(i) != '"') {
-                            if (fileContents.charAt(i) == '\n') {
-                                lineNumber++;
-                            }
+                    } else {
+                        tokens.add(new Token(TokenType.EQUAL, "=", null));
+                    }
+                    break;
+                case '!':
+                    if (i + 1 < fileContents.length() && fileContents.charAt(i + 1) == '=') {
+                        tokens.add(new Token(TokenType.BANG_EQUAL, "!=", null));
+                        i++;
+                    } else {
+                        tokens.add(new Token(TokenType.BANG, "!", null));
+                    }
+                    break;
+                case '<':
+                    if (i + 1 < fileContents.length() && fileContents.charAt(i + 1) == '=') {
+                        tokens.add(new Token(TokenType.LESS_EQUAL, "<=", null));
+                        i++;
+                    } else {
+                        tokens.add(new Token(TokenType.LESS, "<", null));
+                    }
+                    break;
+                case '>':
+                    if (i + 1 < fileContents.length() && fileContents.charAt(i + 1) == '=') {
+                        tokens.add(new Token(TokenType.GREATER_EQUAL, ">=", null));
+                        i++;
+                    } else {
+                        tokens.add(new Token(TokenType.GREATER, ">", null));
+                    }
+                    break;
+                case '/':
+                    if (i + 1 < fileContents.length() && fileContents.charAt(i + 1) == '/') {
+                        while (i < fileContents.length() && fileContents.charAt(i) != '\n') {
                             i++;
                         }
-
-                        if (i >= fileContents.length()) {
-                            System.err.println("[line " + lineNumber + "] Error: Unterminated string.");
-                            hasError = true;
-                        } else {
-                            String lexeme = fileContents.substring(start, i + 1);
-                            String literal = fileContents.substring(start + 1, i);
-                            tokens.add(new Token(TokenType.STRING, lexeme, literal));
-                        }
-                        break;
+                        lineNumber++;
+                    } else {
+                        tokens.add(new Token(TokenType.SLASH, "/", null));
                     }
-                    case 't':
-                        if (i + 3 < fileContents.length() && fileContents.substring(i, i + 4).equals("true")) {
-                            tokens.add(new Token(TokenType.TRUE, "true", true));
-                            i += 3;
+                    break;
+                case '"': {
+                    int start = i;
+                    i++;
+                    while (i < fileContents.length() && fileContents.charAt(i) != '"') {
+                        if (fileContents.charAt(i) == '\n') {
+                            lineNumber++;
                         }
-                        break;
-                    case 'f':
-                        if (i + 4 < fileContents.length() && fileContents.substring(i, i + 5).equals("false")) {
-                            tokens.add(new Token(TokenType.FALSE, "false", false));
-                            i += 4;
+                        i++;
+                    }
+
+                    if (i >= fileContents.length()) {
+                        System.err.println("[line " + lineNumber + "] Error: Unterminated string.");
+                        hasError = true;
+                    } else {
+                        String lexeme = fileContents.substring(start, i + 1);
+                        String literal = fileContents.substring(start + 1, i);
+                        tokens.add(new Token(TokenType.STRING, lexeme, literal));
+                    }
+                    break;
+                }
+                default:
+                    if (Character.isDigit(c)) {
+                        int start = i;
+                        while (i + 1 < fileContents.length() && Character.isDigit(fileContents.charAt(i + 1))) {
+                            i++;
                         }
-                        break;
-                    case 'n':
-                        if (i + 2 < fileContents.length() && fileContents.substring(i, i + 3).equals("nil")) {
-                            tokens.add(new Token(TokenType.NIL, "nil", null));
-                            i += 2;
+                        if (i + 1 < fileContents.length() && fileContents.charAt(i + 1) == '.') {
+                            i++;
+                            while (i + 1 < fileContents.length() && Character.isDigit(fileContents.charAt(i + 1))) {
+                                i++;
+                            }
                         }
-                        break;
-                    default:
+                        String lexeme = fileContents.substring(start, i + 1);
+                        double literalValue = Double.parseDouble(lexeme);
+                        tokens.add(new Token(TokenType.NUMBER, lexeme, literalValue));
+                    } else if (Character.isLetter(c)) {
+                        int start = i;
+                        while (i + 1 < fileContents.length() && (Character.isLetterOrDigit(fileContents.charAt(i + 1)) || fileContents.charAt(i + 1) == '_')) {
+                            i++;
+                        }
+                        String lexeme = fileContents.substring(start, i + 1);
+                        TokenType type = keywords.getOrDefault(lexeme, TokenType.IDENTIFIER);
+                        tokens.add(new Token(type, lexeme, null));
+                    } else {
                         System.err.println("[line " + lineNumber + "] Error: Unexpected character: " + c);
                         hasError = true;
-                }
+                    }
             }
         }
 
