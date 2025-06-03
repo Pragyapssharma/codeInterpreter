@@ -2,7 +2,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.AbstractMap;
+import java.util.List;
 import java.util.Map;
+
 
 public class Main {
     public static void main(String[] args) {
@@ -28,6 +30,11 @@ public class Main {
             System.err.println("Error reading file: " + e.getMessage());
             System.exit(1);
         }
+        
+     // Tokenization
+        Scanner scanner = new Scanner(fileContents);
+        List<Token> tokens = scanner.scanTokens();
+
 
         boolean hasError = false;
         int lineNumber = 1;
@@ -208,7 +215,22 @@ public class Main {
             }
         }
 
-        System.out.println("EOF  null");
+        if (command.equals("parse")) {
+            Parser parser = new Parser(tokens);
+            Expr expression = parser.parse();
+            System.out.println(expression);
+            System.exit(0);
+        } else if (command.equals("tokenize")) {
+            for (Token token : tokens) {
+                System.out.println(token);
+            }
+            System.out.println("EOF null");
+            System.exit(0);
+        } else {
+            System.err.println("Unknown command: " + command);
+            System.exit(1);
+        }
+
 
         if (hasError) {
             System.exit(65);
