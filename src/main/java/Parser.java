@@ -82,7 +82,7 @@ class Parser {
         } else if (match(TokenType.LEFT_PAREN)) {
             String expr = expression();
             consume(TokenType.RIGHT_PAREN, "Expect ')' after expression.");
-            return "(group " + expr + ")";
+            return expr;
         }
 
         // Handle invalid input
