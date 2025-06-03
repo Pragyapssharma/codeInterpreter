@@ -215,18 +215,7 @@ public class Main {
             }
         }
 
-        if (command.equals("parse")) {
-            Parser parser = new Parser(tokens);
-            Expr expression = parser.parse();
-            System.out.println(expression);
-            System.exit(0);
-        } else if (command.equals("tokenize")) {
-            for (Token token : tokens) {
-                System.out.println(token);
-            }
-            System.out.println("EOF null");
-            System.exit(0);
-        } else {
+        if (!(command.equals("tokenize") || command.equals("parse"))) {
             System.err.println("Unknown command: " + command);
             System.exit(1);
         }

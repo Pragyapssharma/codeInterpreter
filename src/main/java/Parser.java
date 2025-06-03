@@ -8,32 +8,17 @@ public class Parser {
         this.tokens = tokens;
     }
 
-    // Parses primary expressions like true, false, nil, and numbers
-    Expr parsePrimary() {
-        Token token = advance(); // Read the next token
-
-        switch (token.type) {
-            case TRUE:
-                return new Literal(true);
-            case FALSE:
-                return new Literal(false);
-            case NIL:
-                return new Literal(null);
-            case NUMBER:
-                return new Literal(Double.parseDouble(token.lexeme));
-            case STRING:
-                return new Literal(token.lexeme);
-            default:
-                throw new ParseError("Unexpected token: " + token.lexeme);
-        }
-    }
-
-    // Main parse method
     public Expr parse() {
-        return parsePrimary();
-    }
+        if (tokens.get(current).type == TokenType.TRUE) {
+            return new Literal(true);
+        }
+        if (tokens.get(current).type == TokenType.FALSE) {
+            return new Literal(false);
+        }
+        if (tokens.get(current).type == TokenType.NIL) {
+            return new Literal(null);
+        }
 
-    private Token advance() {
-        return tokens.get(current++);
+        throw new ParseError("Unexpected token: " + tokens.get(current).lexeme);
     }
 }
