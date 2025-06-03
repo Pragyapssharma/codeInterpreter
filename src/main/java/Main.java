@@ -8,6 +8,10 @@ import java.util.Map;
 
 
 public class Main {
+	
+	private static boolean hasError = false;
+    private static int lineNumber = 1;
+	
     public static void main(String[] args) {
         System.err.println("Logs from your program will appear here!");
 
@@ -19,11 +23,6 @@ public class Main {
         String command = args[0];
         String filename = args[1];
 
-        if (!command.equals("parse")) {
-            System.err.println("Unknown command: " + command);
-            System.exit(1);
-        }
-
         String fileContents = "";
         try {
             fileContents = Files.readString(Path.of(filename));
@@ -31,18 +30,20 @@ public class Main {
             System.err.println("Error reading file: " + e.getMessage());
             System.exit(1);
         }
+
+        if (command.equals("tokenize")) {
+            tokenize(fileContents);
+        } else if (command.equals("parse")) {
+            List<Token> tokens = tokenizeAndReturnTokens(fileContents);
+            Parser parser = new Parser(tokens);
+            String result = parser.parse();
+            System.out.println(result);
+        } else {
+            System.err.println("Unknown command: " + command);
+            System.exit(1);
+        }
+
         
-        // Tokenize the input
-        List<Token> tokens = tokenize(fileContents);
-
-        // Parse the tokens
-        Parser parser = new Parser(tokens);
-        String result = parser.parse();
-
-        System.out.println(result);
-
-        boolean hasError = false;
-        int lineNumber = 1;
         final Map<String, String> keywords = Map.ofEntries(
         	    new AbstractMap.SimpleEntry<>("and", "AND"),
         	    new AbstractMap.SimpleEntry<>("class", "CLASS"),
@@ -230,9 +231,9 @@ public class Main {
         }
     }
     
-    private static List<Token> tokenize(String fileContents) {
+    private static List<Token> tokenizeAndReturnTokens(String fileContents) {
         List<Token> tokens = new ArrayList<>();
-        int lineNumber = 1;
+        lineNumber = 1;
 
         for (int i = 0; i < fileContents.length(); i++) {
             char c = fileContents.charAt(i);
@@ -243,7 +244,41 @@ public class Main {
             }
 
             switch (c) {
-                // ... (other token types)
+                case '+':
+                    tokens.add(new Token(TokenType.PLUS, "+", null));
+                    break;
+                case '-':
+                    tokens.add(new Token(TokenType.MINUS, "-", null));
+                    break;
+                case '*':
+                    tokens.add(new Token(TokenType.STAR, "*", null));
+                    break;
+                case '(':
+                    tokens.add(new Token(TokenType.LEFT_PAREN, "(", null));
+                    break;
+                case ')':
+                    tokens.add(new Token(TokenType.RIGHT_PAREN, ")", null));
+                    break;
+                case '"': {
+                    int start = i;
+                    i++;
+                    while (i < fileContents.length() && fileContents.charAt(i) != '"') {
+                        if (fileContents.charAt(i) == '\n') {
+                            lineNumber++;
+                        }
+                        i++;
+                    }
+
+                    if (i >= fileContents.length()) {
+                        System.err.println("[line " + lineNumber + "] Error: Unterminated string.");
+                        hasError = true;
+                    } else {
+                        String lexeme = fileContents.substring(start, i + 1);
+                        String literal = fileContents.substring(start + 1, i);
+                        tokens.add(new Token(TokenType.STRING, lexeme, literal));
+                    }
+                    break;
+                }
                 case 't':
                     if (i + 3 < fileContents.length() && fileContents.substring(i, i + 4).equals("true")) {
                         tokens.add(new Token(TokenType.TRUE, "true", true));
@@ -262,11 +297,29 @@ public class Main {
                         i += 2;
                     }
                     break;
-                // ... (other token types)
+                default:
+                    if (Character.isDigit(c)) {
+                        int start = i;
+                        while (i + 1 < fileContents.length() && Character.isDigit(fileContents.charAt(i + 1))) {
+                            i++;
+                        }
+                        String lexeme = fileContents.substring(start, i + 1);
+                        tokens.add(new Token(TokenType.NUMBER, lexeme, Double.parseDouble(lexeme)));
+                    }
             }
         }
 
         tokens.add(new Token(TokenType.EOF, "", null));
         return tokens;
+    }
+
+    private static void tokenize(String fileContents) {
+        List<Token> tokens = tokenizeAndReturnTokens(fileContents);
+        for (Token token : tokens) {
+            if (token.type != TokenType.EOF) {
+                System.out.println(token.type + " " + token.lexeme + " " + token.literal);
+            }
+        }
+        System.out.println("EOF  null");
     }
 }
