@@ -49,7 +49,6 @@ class Parser {
             }
             return lexeme;
         } else if (match(TokenType.STRING)) {
-            // Remove the quotes from the string literal
             String lexeme = previous().lexeme;
             return lexeme.substring(1, lexeme.length() - 1);
         } else if (match(TokenType.TRUE)) {
@@ -61,7 +60,7 @@ class Parser {
         } else if (match(TokenType.LEFT_PAREN)) {
             String expr = expression();
             consume(TokenType.RIGHT_PAREN);
-            return expr;
+            return "(group " + expr + ")";
         }
 
         // Handle invalid input
