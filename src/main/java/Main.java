@@ -138,6 +138,25 @@ public class Main {
                         System.out.println("GREATER > null");
                     }
                     break;
+                case '0': case '1': case '2': case '3': case '4':
+                case '5': case '6': case '7': case '8': case '9': {
+                    int start = i;
+                    while (i < fileContents.length() && Character.isDigit(fileContents.charAt(i))) {
+                        i++;
+                    }
+
+                    if (i < fileContents.length() && fileContents.charAt(i) == '.') {
+                        i++;
+                        while (i < fileContents.length() && Character.isDigit(fileContents.charAt(i))) {
+                            i++;
+                        }
+                    }
+
+                    String lexeme = fileContents.substring(start, i);
+                    double literalValue = Double.parseDouble(lexeme);
+                    System.out.println("NUMBER " + lexeme + " " + literalValue);
+                    break;
+                }
                 default:
                     break;
             }
