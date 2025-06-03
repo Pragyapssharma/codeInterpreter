@@ -145,7 +145,8 @@ public class Main {
                         i++;
                     }
 
-                    if (i < fileContents.length() && fileContents.charAt(i) == '.') {
+                    if (i < fileContents.length() && fileContents.charAt(i) == '.' &&
+                        i + 1 < fileContents.length() && Character.isDigit(fileContents.charAt(i + 1))) {
                         i++;
                         while (i < fileContents.length() && Character.isDigit(fileContents.charAt(i))) {
                             i++;
@@ -155,6 +156,8 @@ public class Main {
                     String lexeme = fileContents.substring(start, i);
                     double literalValue = Double.parseDouble(lexeme);
                     System.out.println("NUMBER " + lexeme + " " + literalValue);
+
+                    i--;
                     break;
                 }
                 default:
