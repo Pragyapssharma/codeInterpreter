@@ -18,7 +18,7 @@ class Parser {
     private String expression() {
         String result = term();
 
-        while (match(TokenType.PLUS)) {
+        while (match(TokenType.PLUS, TokenType.MINUS)) {
             String operator = previous().lexeme;
             String right = term();
             result = "(" + operator + " " + result + " " + right + ")";
