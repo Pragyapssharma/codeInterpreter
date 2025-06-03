@@ -160,6 +160,34 @@ public class Main {
                     i--;
                     break;
                 }
+             // Define reserved keywords
+                private static final Map<String, String> keywords = Map.of(
+                    "if", "IF", "else", "ELSE", "while", "WHILE",
+                    "return", "RETURN", "for", "FOR", "class", "CLASS"
+                );
+
+                case 'a': case 'b': case 'c': case 'd': case 'e': case 'f':
+                case 'g': case 'h': case 'i': case 'j': case 'k': case 'l':
+                case 'm': case 'n': case 'o': case 'p': case 'q': case 'r':
+                case 's': case 't': case 'u': case 'v': case 'w': case 'x':
+                case 'y': case 'z': case 'A': case 'B': case 'C': case 'D':
+                case 'E': case 'F': case 'G': case 'H': case 'I': case 'J':
+                case 'K': case 'L': case 'M': case 'N': case 'O': case 'P':
+                case 'Q': case 'R': case 'S': case 'T': case 'U': case 'V':
+                case 'W': case 'X': case 'Y': case 'Z': case '_': {
+                    int start = i;
+                    while (i < fileContents.length() &&
+                        (Character.isLetterOrDigit(fileContents.charAt(i)) || fileContents.charAt(i) == '_')) {
+                        i++;
+                    }
+
+                    String lexeme = fileContents.substring(start, i);
+                    String tokenType = keywords.getOrDefault(lexeme, "IDENTIFIER");
+                    System.out.println(tokenType + " " + lexeme + " null");
+
+                    i--;
+                    break;
+                }
                 default:
                     break;
             }
