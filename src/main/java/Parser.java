@@ -43,9 +43,13 @@ class Parser {
     // Factor -> NUMBER | STRING | TRUE | FALSE | NIL | ( expression )
     private String factor() {
         if (match(TokenType.NUMBER)) {
-            return previous().lexeme; // Return the number literal as a string
+            String lexeme = previous().lexeme;
+            if (!lexeme.contains(".")) {
+                lexeme += ".0";
+            }
+            return lexeme;
         } else if (match(TokenType.STRING)) {
-            return previous().lexeme; // Return the string literal
+            return previous().lexeme; 
         } else if (match(TokenType.TRUE)) {
             return "true";
         } else if (match(TokenType.FALSE)) {
