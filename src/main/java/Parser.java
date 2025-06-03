@@ -58,13 +58,13 @@ class Parser {
 
     // Factor -> NUMBER | STRING | TRUE | FALSE | NIL | ( expression )
     private String factor() {
-    	if (match(TokenType.MINUS)) {
+        if (match(TokenType.MINUS)) {
             String expr = factor();
             return "(- " + expr + ")";
         } else if (match(TokenType.BANG)) {
             String expr = factor();
             return "(! " + expr + ")";
-    	} else if (match(TokenType.NUMBER)) {
+        } else if (match(TokenType.NUMBER)) {
             String lexeme = previous().lexeme;
             if (!lexeme.contains(".")) {
                 lexeme += ".0";
