@@ -16,9 +16,21 @@ class Parser {
 
     // Expression -> Term ((PLUS | MINUS) Term)*
     private String expression() {
-        String result = term();
+        String result = comparison();
 
         while (match(TokenType.PLUS, TokenType.MINUS)) {
+            String operator = previous().lexeme;
+            String right = comparison();
+            result = "(" + operator + " " + result + " " + right + ")";
+        }
+
+        return result;
+    }
+    
+    private String comparison() {
+        String result = term();
+
+        while (match(TokenType.GREATER, TokenType.GREATER_EQUAL, TokenType.LESS, TokenType.LESS_EQUAL)) {
             String operator = previous().lexeme;
             String right = term();
             result = "(" + operator + " " + result + " " + right + ")";
