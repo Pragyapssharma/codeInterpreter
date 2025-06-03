@@ -31,7 +31,7 @@ class Parser {
     private String term() {
         String result = factor();
 
-        while (match(TokenType.STAR)) {
+        while (match(TokenType.STAR, TokenType.SLASH)) {
             String operator = previous().lexeme;
             String right = factor();
             result = "(" + operator + " " + result + " " + right + ")";
@@ -42,8 +42,10 @@ class Parser {
 
     // Factor -> NUMBER | STRING | TRUE | FALSE | NIL | ( expression )
     private String factor() {
-        if (match(TokenType.NUMBER, TokenType.STRING)) {
-            return previous().literal.toString();
+        if (match(TokenType.NUMBER)) {
+            return previous().lexeme; // Return the number literal as a string
+        } else if (match(TokenType.STRING)) {
+            return previous().lexeme; // Return the string literal
         } else if (match(TokenType.TRUE)) {
             return "true";
         } else if (match(TokenType.FALSE)) {
