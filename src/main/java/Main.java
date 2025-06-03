@@ -215,9 +215,17 @@ public class Main {
             }
         }
 
-        if (!(command.equals("tokenize") || command.equals("parse"))) {
-            System.err.println("Unknown command: " + command);
-            System.exit(1);
+        if (command.equals("parse")) {
+            Parser parser = new Parser(tokens);  // Ensure Parser class exists
+            Expr expression = parser.parse();    // Parse and generate AST
+            System.out.println(expression);      // Print the AST output
+            System.exit(0);
+        } else if (command.equals("tokenize")) {
+            for (Token token : tokens) {
+                System.out.println(token);
+            }
+            System.out.println("EOF null");
+            System.exit(0);
         }
 
 
