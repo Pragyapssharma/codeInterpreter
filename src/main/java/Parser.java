@@ -81,7 +81,7 @@ class Parser {
             return "nil";
         } else if (match(TokenType.LEFT_PAREN)) {
             String expr = expression();
-            consume(TokenType.RIGHT_PAREN);
+            consume(TokenType.RIGHT_PAREN, "Expect ')' after expression.");
             return "(group " + expr + ")";
         }
 
@@ -129,12 +129,12 @@ class Parser {
         return tokens.get(current - 1);
     }
 
-    private Token consume(TokenType type) {
+    private Token consume(TokenType type, String message) {
         if (check(type)) {
             return advance();
         }
 
         // Handle invalid input
-        throw new RuntimeException("Invalid input");
+        throw new RuntimeException(message);
     }
 }
