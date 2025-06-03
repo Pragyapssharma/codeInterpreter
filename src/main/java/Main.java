@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +19,7 @@ public class Main {
         String command = args[0];
         String filename = args[1];
 
-        if (!command.equals("tokenize")) {
+        if (!command.equals("parse")) {
             System.err.println("Unknown command: " + command);
             System.exit(1);
         }
@@ -31,10 +32,14 @@ public class Main {
             System.exit(1);
         }
         
-     // Tokenization
-        Scanner scanner = new Scanner(fileContents);
-        List<Token> tokens = scanner.scanTokens();
+        // Tokenize the input
+        List<Token> tokens = tokenize(fileContents);
 
+        // Parse the tokens
+        Parser parser = new Parser(tokens);
+        String result = parser.parse();
+
+        System.out.println(result);
 
         boolean hasError = false;
         int lineNumber = 1;
@@ -215,18 +220,7 @@ public class Main {
             }
         }
 
-        if (command.equals("parse")) {
-            Parser parser = new Parser(tokens);  // Ensure Parser class exists
-            Expr expression = parser.parse();    // Parse and generate AST
-            System.out.println(expression);      // Print the AST output
-            System.exit(0);
-        } else if (command.equals("tokenize")) {
-            for (Token token : tokens) {
-                System.out.println(token);
-            }
-            System.out.println("EOF null");
-            System.exit(0);
-        }
+        System.out.println("EOF  null");
 
 
         if (hasError) {
@@ -234,5 +228,45 @@ public class Main {
         } else {
             System.exit(0);
         }
+    }
+    
+    private static List<Token> tokenize(String fileContents) {
+        List<Token> tokens = new ArrayList<>();
+        int lineNumber = 1;
+
+        for (int i = 0; i < fileContents.length(); i++) {
+            char c = fileContents.charAt(i);
+
+            if (c == '\n') {
+                lineNumber++;
+                continue;
+            }
+
+            switch (c) {
+                // ... (other token types)
+                case 't':
+                    if (i + 3 < fileContents.length() && fileContents.substring(i, i + 4).equals("true")) {
+                        tokens.add(new Token(TokenType.TRUE, "true", true));
+                        i += 3;
+                    }
+                    break;
+                case 'f':
+                    if (i + 4 < fileContents.length() && fileContents.substring(i, i + 5).equals("false")) {
+                        tokens.add(new Token(TokenType.FALSE, "false", false));
+                        i += 4;
+                    }
+                    break;
+                case 'n':
+                    if (i + 2 < fileContents.length() && fileContents.substring(i, i + 3).equals("nil")) {
+                        tokens.add(new Token(TokenType.NIL, "nil", null));
+                        i += 2;
+                    }
+                    break;
+                // ... (other token types)
+            }
+        }
+
+        tokens.add(new Token(TokenType.EOF, "", null));
+        return tokens;
     }
 }
