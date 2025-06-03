@@ -33,11 +33,21 @@ public class Main {
 
         if (command.equals("tokenize")) {
             tokenize(fileContents);
+            if (hasError) {
+                System.exit(65);
+            } else {
+                System.exit(0);
+            }
         } else if (command.equals("parse")) {
             List<Token> tokens = tokenizeAndReturnTokens(fileContents);
             Parser parser = new Parser(tokens);
             String result = parser.parse();
             System.out.println(result);
+            if (hasError) {
+                System.exit(65);
+            } else {
+                System.exit(0);
+            }
         } else {
             System.err.println("Unknown command: " + command);
             System.exit(1);
