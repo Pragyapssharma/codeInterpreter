@@ -384,7 +384,7 @@ public class Main {
                         String lexeme = fileContents.substring(start, i + 1);
                         double literalValue = Double.parseDouble(lexeme);
                         tokens.add(new Token(TokenType.NUMBER, lexeme, literalValue));
-                    } else if (Character.isLetter(c)) {
+                    } else if (Character.isLetter(c) || c == '_') {
                         int start = i;
                         while (i + 1 < fileContents.length() && (Character.isLetterOrDigit(fileContents.charAt(i + 1)) || fileContents.charAt(i + 1) == '_')) {
                             i++;
