@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.AbstractMap;
 import java.util.Map;
 
 public class Main {
@@ -30,7 +31,25 @@ public class Main {
 
         boolean hasError = false;
         int lineNumber = 1;
-        final Map<String, String> keywords = Map.of("if", "IF", "else", "ELSE", "while", "WHILE", "return", "RETURN", "for", "FOR", "class", "CLASS");
+        final Map<String, String> keywords = Map.ofEntries(
+        	    new AbstractMap.SimpleEntry<>("and", "AND"),
+        	    new AbstractMap.SimpleEntry<>("class", "CLASS"),
+        	    new AbstractMap.SimpleEntry<>("else", "ELSE"),
+        	    new AbstractMap.SimpleEntry<>("false", "FALSE"),
+        	    new AbstractMap.SimpleEntry<>("for", "FOR"),
+        	    new AbstractMap.SimpleEntry<>("fun", "FUN"),
+        	    new AbstractMap.SimpleEntry<>("if", "IF"),
+        	    new AbstractMap.SimpleEntry<>("nil", "NIL"),
+        	    new AbstractMap.SimpleEntry<>("or", "OR"),
+        	    new AbstractMap.SimpleEntry<>("print", "PRINT"),
+        	    new AbstractMap.SimpleEntry<>("return", "RETURN"),
+        	    new AbstractMap.SimpleEntry<>("super", "SUPER"),
+        	    new AbstractMap.SimpleEntry<>("this", "THIS"),
+        	    new AbstractMap.SimpleEntry<>("true", "TRUE"),
+        	    new AbstractMap.SimpleEntry<>("var", "VAR"),
+        	    new AbstractMap.SimpleEntry<>("while", "WHILE")
+        	);
+
 
         for (int i = 0; i < fileContents.length(); i++) {
             char c = fileContents.charAt(i);
