@@ -80,10 +80,11 @@ class Parser {
         } else if (match(TokenType.NIL)) {
             return "nil";
         } else if (match(TokenType.LEFT_PAREN)) {
-            String expr = expression();  // Parse the inner expression
-            if (!match(TokenType.RIGHT_PAREN)) {  // Check for closing parenthesis
+            String expr = expression();  // Parse the full expression within parentheses
+            if (!check(TokenType.RIGHT_PAREN)) {  // Ensure the next token is a closing parenthesis
                 throw new RuntimeException("Expect ')' after expression.");
             }
+            advance();  // Consume the closing parenthesis
             return "(group " + expr + ")";
         }
 
