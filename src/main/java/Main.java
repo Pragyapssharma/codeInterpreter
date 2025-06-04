@@ -251,7 +251,7 @@ public class Main {
         List<Token> tokens = scanner.scanTokens();
         for (Token token : tokens) {
             if (token.type != TokenType.EOF) {
-                System.out.println(token.type + " " + token.lexeme + " " + token.literal);
+                System.out.println(token.type + " " + token.lexeme + " " + (token.literal != null ? token.literal : "null"));
             } else {
                 System.out.println("EOF  null");
             }

@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Scanner {
+	private boolean hasError = false;
     private final String source;
     private final List<Token> tokens = new ArrayList<>();
     private int start = 0;
@@ -171,7 +172,8 @@ public class Scanner {
         }
 
         if (isAtEnd()) {
-            // Error handling
+        	tokens.add(new Token(TokenType.ERROR, "Unterminated string", null, line));
+        	this.hasError = true; 
             return;
         }
 
@@ -179,6 +181,10 @@ public class Scanner {
 
         String value = source.substring(start + 1, current - 1);
         addToken(TokenType.STRING, value);
+    }
+    
+    public boolean hadError() {
+        return hasError;
     }
 
     private void number() {
