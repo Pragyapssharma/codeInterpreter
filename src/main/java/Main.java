@@ -256,5 +256,8 @@ public class Main {
                 System.out.println("EOF  null");
             }
         }
+        if (scanner.hadError()) {
+            hasError = true;
+        }
     }
 }
