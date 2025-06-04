@@ -16,7 +16,15 @@ class Parser {
 
     // Expression -> Term ((PLUS | MINUS) Term)*
     private String expression() {
-        return equality();
+        String result = equality();
+
+        while (match(TokenType.PLUS, TokenType.MINUS)) {
+            String operator = previous().lexeme;
+            String right = equality();
+            result = "(" + operator + " " + result + " " + right + ")";
+        }
+
+        return result;
     }
 
     private String equality() {
@@ -80,7 +88,7 @@ class Parser {
         } else if (match(TokenType.NIL)) {
             return "nil";
         } else if (match(TokenType.LEFT_PAREN)) {
-            String expr = equality();  // Parse the inner expression
+            String expr = expression();  // Parse the inner expression
             consume(TokenType.RIGHT_PAREN, "Expect ')' after expression.");
             return "(group " + expr + ")";
         }
