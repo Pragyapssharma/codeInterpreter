@@ -81,7 +81,10 @@ class Parser {
             return "nil";
         } else if (match(TokenType.LEFT_PAREN)) {
             String expr = expression();  // Parse the inner expression
-            consume(TokenType.RIGHT_PAREN, "Expect ')' after expression.");
+            advance(); // directly consume the RIGHT_PAREN
+            if(previous().type != TokenType.RIGHT_PAREN) {
+                throw new RuntimeException("Expect ')' after expression.");
+            }
             return "(group " + expr + ")";
         }
 
