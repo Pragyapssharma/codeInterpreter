@@ -11,20 +11,12 @@ class Parser {
 
     // Parse expression
     String parse() {
-        return expression();
+        return equality();
     }
 
     // Expression -> Term ((PLUS | MINUS) Term)*
     private String expression() {
-        String result = term();
-
-        while (match(TokenType.PLUS, TokenType.MINUS)) {
-            String operator = previous().lexeme;
-            String right = term();
-            result = "(" + operator + " " + result + " " + right + ")";
-        }
-
-        return result;
+        return equality();
     }
 
     private String equality() {
