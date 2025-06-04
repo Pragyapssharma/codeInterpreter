@@ -80,7 +80,6 @@ class Parser {
         } else if (match(TokenType.NIL)) {
             return "nil";
         } else if (match(TokenType.LEFT_PAREN)) {
-        	int start = current - 1;
             String expr = expression();
             consume(TokenType.RIGHT_PAREN, "Expect ')' after expression.");
             return "(group " + expr + ")";
@@ -136,6 +135,6 @@ class Parser {
         }
 
         Token token = peek();
-        throw new RuntimeException("Expected " + type + " but got " + token.type + " at line " + token.line + " at column " + token.column + ": " + message);
+        throw new RuntimeException("Expected " + type + " but got " + token.type + " at line " + message);
     }
 }
