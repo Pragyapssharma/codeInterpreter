@@ -81,11 +81,12 @@ class Parser {
             return "nil";
         } else if (match(TokenType.LEFT_PAREN)) {
             String expr = expression();
-            consume(TokenType.RIGHT_PAREN, "Expect ')' after expression.");
+            if (!match(TokenType.RIGHT_PAREN)) { // Ensure we consume the closing parenthesis
+                throw new RuntimeException("Expect ')' after expression.");
+            }
             return "(group " + expr + ")";
         }
 
-        // Handle invalid input
         throw new RuntimeException("Invalid input");
     }
 
