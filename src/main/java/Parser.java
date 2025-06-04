@@ -15,6 +15,7 @@ class Parser {
     }
 
     // Expression -> Term ((PLUS | MINUS) Term)*
+ // Expression -> Equality ((PLUS | MINUS) Equality)*
     private String expression() {
         String result = equality();
 
@@ -88,7 +89,7 @@ class Parser {
         } else if (match(TokenType.NIL)) {
             return "nil";
         } else if (match(TokenType.LEFT_PAREN)) {
-            String expr = expression();  // Parse the inner expression
+            String expr = equality();  // Parse the inner expression
             consume(TokenType.RIGHT_PAREN, "Expect ')' after expression.");
             return "(group " + expr + ")";
         }
