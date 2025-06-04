@@ -74,7 +74,11 @@ class Parser {
             String expr = factor();
             return "(! " + expr + ")";
         } else if (match(TokenType.NUMBER)) {
-        	 return previous().lexeme;
+        	String lexeme = previous().lexeme;
+            if (!lexeme.contains(".")) {
+                lexeme += ".0";
+            }
+            return lexeme;
         } else if (match(TokenType.STRING)) {
             String lexeme = previous().lexeme;
             return lexeme.substring(1, lexeme.length() - 1);
