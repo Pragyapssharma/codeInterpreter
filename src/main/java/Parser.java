@@ -11,7 +11,7 @@ class Parser {
 
     // Parse expression
     String parse() {
-        return equality();
+        return expression();
     }
 
     // Expression -> Term ((PLUS | MINUS) Term)*
@@ -143,6 +143,6 @@ class Parser {
         }
 
         Token token = peek();
-        throw new RuntimeException("Expected " + type + " but got " + token.type + " at line " + message);
+        throw new RuntimeException("Expected " + type + " but got " + token.type + " at line " + token.line + ". " + message);
     }
 }
