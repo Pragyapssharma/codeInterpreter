@@ -80,8 +80,8 @@ class Parser {
         } else if (match(TokenType.NIL)) {
             return "nil";
         } else if (match(TokenType.LEFT_PAREN)) {
-            String expr = expression();
-            if (!match(TokenType.RIGHT_PAREN)) { 
+            String expr = expression();  // Parse the inner expression
+            if (!match(TokenType.RIGHT_PAREN)) {  // Check for closing parenthesis
                 throw new RuntimeException("Expect ')' after expression.");
             }
             return "(group " + expr + ")";
