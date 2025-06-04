@@ -37,6 +37,9 @@ public class Scanner {
         while (!isAtEnd()) {
             start = current;
             scanToken();
+            if (hasError) {
+                break;
+            }
         }
 
         if (!hasError) {
