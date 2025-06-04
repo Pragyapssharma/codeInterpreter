@@ -177,8 +177,7 @@ public class Scanner {
         }
 
         if (isAtEnd()) {
-            System.err.println("[line " + line + "] Error: Unterminated string.");
-            this.hasError = true; 
+        	this.hasError = true; 
             tokens.add(new Token(TokenType.ERROR, "Unterminated string", null, line));
             return;
         }

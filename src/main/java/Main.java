@@ -250,14 +250,13 @@ public class Main {
         Scanner scanner = new Scanner(fileContents);
         List<Token> tokens = scanner.scanTokens();
         for (Token token : tokens) {
-            if (token.type != TokenType.EOF) {
+            if (token.type == TokenType.ERROR) {
+                System.err.println("[line " + token.line + "] Error: " + token.lexeme);
+            } else if (token.type != TokenType.EOF) {
                 System.out.println(token.type + " " + token.lexeme + " " + (token.literal != null ? token.literal : "null"));
             } else {
                 System.out.println("EOF  null");
             }
-        }
-        if (scanner.hadError()) {
-            hasError = true;
         }
     }
 }
