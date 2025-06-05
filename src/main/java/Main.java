@@ -48,8 +48,10 @@ public class Main {
             if (result != null) {
                 if (result instanceof Double) {
                     System.out.println(((Double) result).toString().replaceAll("0+$", "").replaceAll("\\.$", ""));
+                } else if (result instanceof String && ((String) result).equals("nil")) {
+                    System.out.println("nil");
                 } else {
-                    System.out.println(result.toString().toLowerCase());
+                    System.out.println(result.toString());
                 }
             }
             if (hasError) {

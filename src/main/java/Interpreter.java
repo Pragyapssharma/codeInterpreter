@@ -1,55 +1,54 @@
 public class Interpreter {
     public Object interpret(String ast) {
-        // Implement the logic to evaluate the AST
-        // For now, let's just handle the literals
+        // Remove the parentheses
+        ast = ast.substring(1, ast.length() - 1);
+
+        // Check if the AST is a number literal
+        if (ast.matches("\\d+(\\.\\d+)?")) {
+            return Double.parseDouble(ast);
+        }
+
+        // Check if the AST is a string literal
+        if (ast.startsWith("\"") && ast.endsWith("\"")) {
+            return ast.substring(1, ast.length() - 1);
+        }
+
+        // Check if the AST is a boolean literal
         if (ast.equals("true")) {
             return true;
         } else if (ast.equals("false")) {
             return false;
-        } else if (ast.equals("nil")) {
-            return "nil";
-        } else {
-            // Handle other expressions
-            // You can use a recursive descent parser to evaluate the expression
-            // For example, you can use a method to evaluate the addition expression
-            // and another method to evaluate the multiplication expression
-            // and so on
-            return evaluateExpression(ast);
         }
-    }
 
-    private Object evaluateExpression(String ast) {
-        // Remove the parentheses and the operator
-        ast = ast.substring(1, ast.length() - 1);
+        // Check if the AST is a nil literal
+        if (ast.equals("nil")) {
+            return "nil";
+        }
+
+        // Handle other expressions
         int spaceIndex = ast.indexOf(' ');
         String operator = ast.substring(0, spaceIndex);
         String leftOperand = ast.substring(spaceIndex + 1, ast.indexOf(' ', spaceIndex + 1));
         String rightOperand = ast.substring(ast.indexOf(' ', spaceIndex + 1) + 1);
 
-        Object leftValue = getOperandValue(leftOperand);
-        Object rightValue = getOperandValue(rightOperand);
+        Object leftValue = interpretOperand(leftOperand);
+        Object rightValue = interpretOperand(rightOperand);
 
         if (operator.equals("+")) {
-            return (double) leftValue + (double) rightValue;
-        } else if (operator.equals("-")) {
-            return (double) leftValue - (double) rightValue;
-        } else if (operator.equals("*")) {
-            return (double) leftValue * (double) rightValue;
-        } else if (operator.equals("/")) {
-            return (double) leftValue / (double) rightValue;
-        } else if (operator.equals("==")) {
-            return leftValue.equals(rightValue);
-        } else if (operator.equals("!=")) {
-            return !leftValue.equals(rightValue);
-        } else {
-            throw new RuntimeException("Unsupported operator: " + operator);
+            if (leftValue instanceof Double && rightValue instanceof Double) {
+                return (double) leftValue + (double) rightValue;
+            }
         }
+
+        // Handle other operators
+        throw new RuntimeException("Unsupported operator: " + operator);
     }
 
-    private Object getOperandValue(String operand) {
-        if (operand.startsWith("(")) {
-            Interpreter interpreter = new Interpreter();
-            return interpreter.interpret(operand);
+    private Object interpretOperand(String operand) {
+        if (operand.startsWith("\"") && operand.endsWith("\"")) {
+            return operand.substring(1, operand.length() - 1);
+        } else if (operand.matches("\\d+(\\.\\d+)?")) {
+            return Double.parseDouble(operand);
         } else if (operand.equals("true")) {
             return true;
         } else if (operand.equals("false")) {
@@ -57,7 +56,7 @@ public class Interpreter {
         } else if (operand.equals("nil")) {
             return "nil";
         } else {
-            return Double.parseDouble(operand);
+            throw new RuntimeException("Unsupported operand: " + operand);
         }
     }
 }
