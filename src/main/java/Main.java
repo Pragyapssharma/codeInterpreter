@@ -35,14 +35,14 @@ public class Main {
         if (command.equals("tokenize")) {
             tokenize(fileContents);
         } else if (command.equals("parse")) {
-        	try {
-            String result = parse(fileContents);
+        	String result = parse(fileContents);
             if (result != null) {
-                System.out.println(result);
+                if (result.matches("\\d+(\\.\\d*[1-9])?")) {
+                    System.out.println(result.replaceAll("0+$", "").replaceAll("\\.$", ""));
+                } else {
+                    System.out.println(result);
+                }
             }
-        	} catch (ParseError e) {
-        		hasError = true;
-        	}
         } else if (command.equals("evaluate")) {
             Object result = evaluate(fileContents);
             if (result != null) {
