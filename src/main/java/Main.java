@@ -304,8 +304,10 @@ public class Main {
         Parser parser = new Parser(tokens);
         try {
             String ast = parser.parse().trim();
-            while (ast.startsWith("group ")) {
-                ast = ast.substring(6).trim();
+            ast = ast.replaceAll("^group ", "");
+            while (ast.startsWith("(") && ast.endsWith(")")) {
+                ast = ast.substring(1, ast.length() - 1).trim();
+                ast = ast.replaceAll("^group ", "");
             }
             return evaluateAst(ast);
         } catch (ParseError e) {
@@ -320,9 +322,6 @@ public class Main {
 
     private static Object evaluateAst(String ast) {
         ast = ast.trim();
-        while (ast.startsWith("(") && ast.endsWith(")")) {
-            ast = ast.substring(1, ast.length() - 1).trim();
-        }
         if (ast.startsWith("-")) {
             double operand = (double) evaluateAst(ast.substring(1).trim());
             return -operand;
