@@ -334,31 +334,41 @@ public class Main {
      // Handle arithmetic operations
         if (ast.contains("*")) {
             String[] parts = ast.split("\\*");
-            double left = (double) evaluateAst(parts[0].trim());
-            double right = (double) evaluateAst(parts[1].trim());
-            return left * right;
+            Object left = evaluateAst(parts[0].trim());
+            Object right = evaluateAst(parts[1].trim());
+            if (left instanceof Double && right instanceof Double) {
+                return (double) left * (double) right;
+            }
         } else if (ast.contains("/")) {
             String[] parts = ast.split("/");
-            double left = (double) evaluateAst(parts[0].trim());
-            double right = (double) evaluateAst(parts[1].trim());
-            if (right == 0) {
-                throw new ArithmeticException("Error: Division by zero");
+            Object left = evaluateAst(parts[0].trim());
+            Object right = evaluateAst(parts[1].trim());
+            if (left instanceof Double && right instanceof Double) {
+                if ((double) right == 0) {
+                    throw new ArithmeticException("Error: Division by zero");
+                }
+                return (double) left / (double) right;
             }
-            return left / right;
         } else if (ast.contains("+")) {
             String[] parts = ast.split("\\+");
-            double left = (double) evaluateAst(parts[0].trim());
-            double right = (double) evaluateAst(parts[1].trim());
-            return left + right;
+            Object left = evaluateAst(parts[0].trim());
+            Object right = evaluateAst(parts[1].trim());
+            if (left instanceof Double && right instanceof Double) {
+                return (double) left + (double) right;
+            }
         } else if (ast.contains("-")) {
             if (ast.startsWith("-")) {
-            	double operand = (double) evaluateAst(ast.substring(1).trim());
-                return -operand;
+                Object operand = evaluateAst(ast.substring(1).trim());
+                if (operand instanceof Double) {
+                    return -(double) operand;
+                }
             } else {
                 String[] parts = ast.split("-");
-                double left = (double) evaluateAst(parts[0].trim());
-                double right = (double) evaluateAst(parts[1].trim());
-                return left - right;
+                Object left = evaluateAst(parts[0].trim());
+                Object right = evaluateAst(parts[1].trim());
+                if (left instanceof Double && right instanceof Double) {
+                    return (double) left - (double) right;
+                }
             }
         }
     
