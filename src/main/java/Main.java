@@ -12,6 +12,17 @@ public class Main {
 	private static boolean hasError = false;
     private static int lineNumber = 1;
 	
+    private static String parse(String fileContents) {
+        List<Token> tokens = tokenizeAndReturnTokens(fileContents);
+        Parser parser = new Parser(tokens);
+        try {
+            return parser.parse();
+        } catch (ParseError e) {
+            hasError = true;
+            return null;
+        }
+    }
+    
     public static void main(String[] args) {
         System.err.println("Logs from your program will appear here!");
 
@@ -33,26 +44,25 @@ public class Main {
 
         if (command.equals("tokenize")) {
             tokenize(fileContents);
-            if (hasError) {
-                System.exit(65);
-            } else {
-                System.exit(0);
-            }
         } else if (command.equals("parse")) {
-            List<Token> tokens = tokenizeAndReturnTokens(fileContents);
+        	try {
+        	List<Token> tokens = tokenizeAndReturnTokens(fileContents);
             Parser parser = new Parser(tokens);
             String result = parser.parse();
             System.out.println(result);
-            if (hasError) {
-                System.exit(65);
-            } else {
-                System.exit(0);
-            }
+        	} catch (ParseError e) {
+            // Error message is already printed in the Parser class
+        	}
         } else {
             System.err.println("Unknown command: " + command);
             System.exit(1);
         }
 
+        if (hasError) {
+            System.exit(65);
+        } else {
+            System.exit(0);
+        }
         
         final Map<String, String> keywords = Map.ofEntries(
         	    new AbstractMap.SimpleEntry<>("and", "AND"),

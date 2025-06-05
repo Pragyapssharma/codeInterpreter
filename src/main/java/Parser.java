@@ -142,7 +142,11 @@ class Parser {
             return advance();
         }
 
-        Token token = peek();
-        throw new RuntimeException("Expected " + type + " but got " + token.type + " at line " + token.line + ". " + message);
+        throw error(peek(), message);
+    }
+
+    private ParseError error(Token token, String message) {
+        System.err.println("[line " + token.line + "] Error at '" + token.lexeme + "': " + message);
+        return new ParseError("Parse error");
     }
 }
