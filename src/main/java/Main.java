@@ -330,6 +330,8 @@ public class Main {
             return false;
         } else if (ast.equals("nil")) {
             return "nil";
+        }else if (ast.startsWith("group ")) {
+            return evaluateAst(ast.substring(6));
         }
         // Handle other expressions
         return ast;
