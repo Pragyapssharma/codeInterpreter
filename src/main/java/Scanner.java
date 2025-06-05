@@ -119,7 +119,8 @@ public class Scanner {
                 } else if (isAlpha(c)) {
                     identifier();
                 } else {
-                    // Error handling
+                    tokens.add(new Token(TokenType.ERROR, "Unexpected character: " + c, null, line));
+                    hasError = true;
                 }
                 break;
         }
