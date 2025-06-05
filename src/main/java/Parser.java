@@ -74,11 +74,13 @@ class Parser {
             String expr = factor();
             return "(! " + expr + ")";
         } else if (match(TokenType.NUMBER)) {
-        	String lexeme = previous().lexeme;
-            if (!lexeme.contains(".")) {
-                lexeme += ".0";
+            String lexeme = previous().lexeme;
+            double value = Double.parseDouble(lexeme);
+            if (value == (long) value) {
+                return String.format("%.1f", value);
+            } else {
+                return String.format("%s", lexeme);
             }
-            return lexeme;
         } else if (match(TokenType.STRING)) {
             String lexeme = previous().lexeme;
             return lexeme.substring(1, lexeme.length() - 1);
