@@ -258,7 +258,7 @@ public class Main {
         List<Token> tokens = scanner.scanTokens();
         for (Token token : tokens) {
             if (token.type == TokenType.ERROR) {
-                System.err.println("[line " + token.line + "] Error: " + token.lexeme + ".");
+                System.err.println("[line " + token.line + "] Error: " + token.lexeme);
                 hasError = true;
             } else if (token.type != TokenType.EOF) {
                 System.out.println(token.type + " " + token.lexeme + " " + (token.literal != null ? token.literal : "null"));

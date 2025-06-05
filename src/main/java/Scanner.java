@@ -119,7 +119,7 @@ public class Scanner {
                 } else if (isAlpha(c)) {
                     identifier();
                 } else {
-                    tokens.add(new Token(TokenType.ERROR, "Unexpected character" + c, null, line));
+                    tokens.add(new Token(TokenType.ERROR, "Unexpected character: " + c, null, line));
                     hasError = true;
                 }
                 break;
