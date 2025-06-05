@@ -46,12 +46,12 @@ public class Main {
             tokenize(fileContents);
         } else if (command.equals("parse")) {
         	try {
-        	List<Token> tokens = tokenizeAndReturnTokens(fileContents);
-            Parser parser = new Parser(tokens);
-            String result = parser.parse();
-            System.out.println(result);
+            String result = parse(fileContents);
+            if (result != null) {
+                System.out.println(result);
+            }
         	} catch (ParseError e) {
-            // Error message is already printed in the Parser class
+        		hasError = true;
         	}
         } else {
             System.err.println("Unknown command: " + command);
