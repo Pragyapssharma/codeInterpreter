@@ -337,34 +337,36 @@ public class Main {
             return Double.parseDouble(ast);
         }
 
-     // Handle arithmetic operations
-        if (ast.contains("*")) {
-            String[] parts = ast.split("\\*");
-            double left = (double) evaluateAst(parts[0].trim());
-            double right = (double) evaluateAst(parts[1].trim());
-            return left * right;
-        } else if (ast.contains("/")) {
-            String[] parts = ast.split("/");
-            double left = (double) evaluateAst(parts[0].trim());
-            double right = (double) evaluateAst(parts[1].trim());
-            if (right == 0) {
-                throw new ArithmeticException("Error: Division by zero");
-            }
-            return left / right;
-        } else if (ast.contains("+")) {
-            String[] parts = ast.split("\\+");
-            double left = (double) evaluateAst(parts[0].trim());
-            double right = (double) evaluateAst(parts[1].trim());
-            return left + right;
-        } else if (ast.contains("-")) {
-            if (ast.startsWith("-")) {
-                double operand = (double) evaluateAst(ast.substring(1).trim());
-                return -operand;
-            } else {
-                String[] parts = ast.split("-");
-                double left = (double) evaluateAst(parts[0].trim());
-                double right = (double) evaluateAst(parts[1].trim());
-                return left - right;
+        // Handle arithmetic operations
+        List<String> operators = List.of(" * ", " / ", " + ", " - ");
+        for (String op : operators) {
+            if (ast.contains(op.trim())) {
+                int index = ast.lastIndexOf(op.trim());
+                String leftExpr = ast.substring(0, index).trim();
+                String rightExpr = ast.substring(index + op.length()).trim();
+
+                Object leftObj = evaluateAst(leftExpr);
+                Object rightObj = evaluateAst(rightExpr);
+
+                if (!(leftObj instanceof Double) || !(rightObj instanceof Double)) {
+                    throw new RuntimeException("Error: Non-numeric values encountered in arithmetic expression");
+                }
+
+                double left = (double) leftObj;
+                double right = (double) rightObj;
+
+                if (op.equals(" * ")) {
+                    return left * right;
+                } else if (op.equals(" / ")) {
+                    if (right == 0) {
+                        throw new ArithmeticException("Error: Division by zero");
+                    }
+                    return left / right;
+                } else if (op.equals(" + ")) {
+                    return left + right;
+                } else if (op.equals(" - ")) {
+                    return left - right;
+                }
             }
         }
 
@@ -402,8 +404,13 @@ public class Main {
             return ast.substring(1, ast.length() - 1);
         }
 
-        // Fallback for unrecognized expressions
-        return ast;
+        try {
+            return Double.parseDouble(ast);
+        } catch (NumberFormatException e) {
+            // If it's not a number, return the string as is
+            return ast;
+        }
+        
     }
 
     
