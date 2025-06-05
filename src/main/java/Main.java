@@ -322,7 +322,24 @@ public class Main {
 
     private static Object evaluateAst(String ast) {
         ast = ast.trim();
-        if (ast.startsWith("-")) {
+        if (ast.startsWith("(") && ast.endsWith(")")) {
+            ast = ast.substring(1, ast.length() - 1).trim();
+        }
+        if (ast.contains(" * ")) {
+            String[] parts = ast.split(" \\* ");
+            double left = (double) evaluateAst(parts[0].trim());
+            double right = (double) evaluateAst(parts[1].trim());
+            return left * right;
+        } else if (ast.contains(" / ")) {
+            String[] parts = ast.split(" / ");
+            double left = (double) evaluateAst(parts[0].trim());
+            double right = (double) evaluateAst(parts[1].trim());
+            if (right == 0) {
+                // Handle division by zero
+                return null; // or throw an exception
+            }
+            return left / right;
+        } else if (ast.startsWith("-")) {
             double operand = (double) evaluateAst(ast.substring(1).trim());
             return -operand;
         } else if (ast.startsWith("!")) {
@@ -349,6 +366,18 @@ public class Main {
         }
         // Handle other expressions
         return ast;
+    }
+    
+    private static boolean isTruthy(Object obj) {
+        if (obj instanceof Boolean) {
+            return (Boolean) obj;
+        } else if (obj instanceof Double) {
+            return ((Double) obj) != 0;
+        } else if (obj.equals("nil")) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     
