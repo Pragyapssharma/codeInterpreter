@@ -303,8 +303,10 @@ public class Main {
         List<Token> tokens = tokenizeAndReturnTokens(fileContents);
         Parser parser = new Parser(tokens);
         try {
-            String ast = parser.parse();
-            ast = ast.replaceAll("^group ", "");
+            String ast = parser.parse().trim();
+            while (ast.startsWith("group ")) {
+                ast = ast.substring(6).trim();
+            }
             return evaluateAst(ast);
         } catch (ParseError e) {
             hasError = true;
