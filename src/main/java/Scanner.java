@@ -213,6 +213,10 @@ public class Scanner {
         }
         return source.charAt(current + 1);
     }
+    
+    public int getLine() {
+        return line;
+    }
 
     private void identifier() {
         while (isAlphaNumeric(peek())) {
