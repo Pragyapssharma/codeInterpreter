@@ -75,15 +75,8 @@ class Parser {
             return "(! " + expr + ")";
         } else if (match(TokenType.NUMBER)) {
             String lexeme = previous().lexeme;
-            if (lexeme.endsWith(".0")) {
-                lexeme = lexeme.replace(".0", "");
-            } else {
-                while (lexeme.endsWith("0")) {
-                    lexeme = lexeme.substring(0, lexeme.length() - 1);
-                }
-                if (lexeme.endsWith(".")) {
-                    lexeme = lexeme.replace(".", "");
-                }
+            if (!lexeme.contains(".")) {
+                lexeme += ".0";
             }
             return lexeme;
         } else if (match(TokenType.STRING)) {
