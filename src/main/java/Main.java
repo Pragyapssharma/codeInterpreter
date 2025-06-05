@@ -304,11 +304,7 @@ public class Main {
         Parser parser = new Parser(tokens);
         try {
             String ast = parser.parse();
-            if (ast.startsWith("(") && ast.endsWith(")")) {
-                return evaluateAst(ast.substring(1, ast.length() - 1));
-            } else {
-                return evaluateAst(ast);
-            }
+            return evaluateAst(ast);
         } catch (ParseError e) {
             hasError = true;
             return null;
@@ -320,15 +316,16 @@ public class Main {
     }
 
     private static Object evaluateAst(String ast) {
+        while (ast.startsWith("(") && ast.endsWith(")")) {
+            ast = ast.substring(1, ast.length() - 1).trim();
+        }
         if (ast.startsWith("group ")) {
-            return evaluateAst(ast.substring(6));
+            ast = ast.substring(6).trim();
         }
         if (ast.matches("\\d+(\\.\\d+)?")) {
             return Double.parseDouble(ast);
         } else if (ast.startsWith("\"") && ast.endsWith("\"")) {
             return ast.substring(1, ast.length() - 1);
-        } else if (isEmpty(ast)) {
-            return "nil";
         } else if (ast.equals("true")) {
             return true;
         } else if (ast.equals("false")) {
