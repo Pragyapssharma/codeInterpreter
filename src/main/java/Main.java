@@ -316,11 +316,11 @@ public class Main {
     }
 
     private static Object evaluateAst(String ast) {
+        while (ast.startsWith("group ")) {
+            ast = ast.substring(6).trim();
+        }
         while (ast.startsWith("(") && ast.endsWith(")")) {
             ast = ast.substring(1, ast.length() - 1).trim();
-        }
-        if (ast.startsWith("group ")) {
-            ast = ast.substring(6).trim();
         }
         if (ast.matches("\\d+(\\.\\d+)?")) {
             return Double.parseDouble(ast);
