@@ -48,8 +48,12 @@ public class Main {
             if (result != null) {
                 if (result instanceof Double) {
                     System.out.println(((Double) result).toString().replaceAll("0+$", "").replaceAll("\\.$", ""));
-                } else {
+                } else if (result instanceof Boolean) {
                     System.out.println(result.toString().toLowerCase());
+                } else if (result.equals("nil")) {
+                    System.out.println("nil");
+                } else {
+                    System.out.println(result.toString());
                 }
             }
             if (hasError) {
@@ -326,7 +330,8 @@ public class Main {
             return "nil";
         }
         // Handle other expressions
-        return ast;
+        Interpreter interpreter = new Interpreter();
+        return interpreter.interpret(ast);
     }
     
 }
