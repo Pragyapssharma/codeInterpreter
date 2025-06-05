@@ -75,11 +75,10 @@ class Parser {
             return "(! " + expr + ")";
         } else if (match(TokenType.NUMBER)) {
             String lexeme = previous().lexeme;
-            double value = Double.parseDouble(lexeme);
-            if (value == (long) value) {
-                return String.format("%.1f", value);
+            if (lexeme.contains(".")) {
+                return lexeme.substring(0, lexeme.indexOf(".") + 2);
             } else {
-                return String.format("%s", lexeme);
+                return lexeme + ".0";
             }
         } else if (match(TokenType.STRING)) {
             String lexeme = previous().lexeme;
