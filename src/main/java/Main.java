@@ -243,7 +243,11 @@ public class Main {
     
     private static List<Token> tokenizeAndReturnTokens(String fileContents) {
         Scanner scanner = new Scanner(fileContents);
-        return scanner.scanTokens();
+        List<Token> tokens = scanner.scanTokens();
+        if (scanner.hadError()) {
+            hasError = true;
+        }
+        return tokens;
     }
 
     private static void tokenize(String fileContents) {
@@ -252,11 +256,15 @@ public class Main {
         for (Token token : tokens) {
             if (token.type == TokenType.ERROR) {
                 System.err.println("[line " + token.line + "] Error: " + token.lexeme);
+                hasError = true;
             } else if (token.type != TokenType.EOF) {
                 System.out.println(token.type + " " + token.lexeme + " " + (token.literal != null ? token.literal : "null"));
             } else {
                 System.out.println("EOF  null");
             }
+        }
+        if (scanner.hadError()) {
+            hasError = true;
         }
     }
 }
