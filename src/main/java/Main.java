@@ -48,7 +48,7 @@ public class Main {
                 Object result = evaluate(fileContents);
                 if (result != null) {
                     if (result instanceof Double) {
-                        System.out.println(((Double) result).toString().replaceAll("0+$", "").replaceAll("\\.$", ""));
+                    	System.out.println(String.format("%s", result).replaceAll("0+$", "").replaceAll("\\.$", ""));
                     } else if (result instanceof Boolean) {
                         System.out.println(result.toString().toLowerCase());
                     } else if (result.equals("nil")) {
@@ -57,7 +57,6 @@ public class Main {
                         System.out.println(result.toString());
                     }
                 }
-                System.exit(0);
             } catch (Exception e) {
                 hasError = true;
                 System.err.println("Error: " + e.getMessage());
