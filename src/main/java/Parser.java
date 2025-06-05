@@ -77,8 +77,6 @@ class Parser {
             String lexeme = previous().lexeme;
             if (!lexeme.contains(".")) {
                 lexeme += ".0";
-            } else {
-                lexeme = lexeme.replaceAll("0+$", "").replaceAll("\\.$", "");
             }
             return lexeme;
         } else if (match(TokenType.STRING)) {
