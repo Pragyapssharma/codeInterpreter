@@ -48,30 +48,22 @@ public class Main {
                 Object result = evaluate(fileContents);
                 if (result != null) {
                     if (result instanceof Double) {
-                    	System.out.println(String.format("%s", result).replaceAll("0+$", "").replaceAll("\\.$", ""));
-                    } else if (result instanceof Boolean) {
-                        System.out.println(result.toString().toLowerCase());
-                    } else if (result.equals("nil")) {
-                        System.out.println("nil");
+                        System.out.println(String.format("%s", result).replaceAll("0+$", "").replaceAll("\\.$", ""));
                     } else {
                         System.out.println(result.toString());
                     }
+                } else {
+                    System.err.println("Error: Unable to evaluate expression");
+                    System.exit(65);
                 }
             } catch (Exception e) {
-                hasError = true;
                 System.err.println("Error: " + e.getMessage());
                 System.exit(65);
             }
-        } else {
-            System.err.println("Unknown command: " + command);
-            System.exit(1);
-        }
-
-        if (hasError) {
-            System.exit(65);
-        } else {
             System.exit(0);
         }
+
+        
         
         final Map<String, String> keywords = Map.ofEntries(
         	    new AbstractMap.SimpleEntry<>("and", "AND"),
