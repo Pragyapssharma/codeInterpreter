@@ -397,7 +397,12 @@ public class Main {
             return ast.substring(1, ast.length() - 1);
         }
 
-        return Double.parseDouble(ast);
+        try {
+            return Double.parseDouble(ast);
+        } catch (NumberFormatException ex) {
+            // If it's not a number, return null
+            return null;
+        }
         
     }
     }
