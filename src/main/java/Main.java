@@ -297,17 +297,8 @@ public class Main {
         Parser parser = new Parser(tokens);
         try {
             String ast = parser.parse().trim();
-            ast = ast.replaceAll("^group ", "");
-            while (ast.startsWith("(") && ast.endsWith(")")) {
-                ast = ast.substring(1, ast.length() - 1).trim();
-                ast = ast.replaceAll("^group ", "");
-            }
             return evaluateAst(ast);
         } catch (ParseError e) {
-            hasError = true;
-            return null;
-        } catch (RuntimeException e) {
-            System.err.println(e.getMessage());
             hasError = true;
             return null;
         }
