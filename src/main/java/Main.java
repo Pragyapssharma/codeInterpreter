@@ -12,16 +12,6 @@ public class Main {
 	private static boolean hasError = false;
     private static int lineNumber = 1;
 	
-    private static String parse(String fileContents) {
-        List<Token> tokens = tokenizeAndReturnTokens(fileContents);
-        Parser parser = new Parser(tokens);
-        try {
-            return parser.parse();
-        } catch (ParseError e) {
-            hasError = true;
-            return null;
-        }
-    }
     
     public static void main(String[] args) {
         System.err.println("Logs from your program will appear here!");
@@ -53,6 +43,16 @@ public class Main {
         	} catch (ParseError e) {
         		hasError = true;
         	}
+        } else if (command.equals("evaluate")) {
+            Object result = evaluate(fileContents);
+            if (result != null) {
+                System.out.println(result.toString().toLowerCase());
+            }
+            if (hasError) {
+                System.exit(65);
+            } else {
+                System.exit(0);
+            }
         } else {
             System.err.println("Unknown command: " + command);
             System.exit(1);
@@ -279,4 +279,33 @@ public class Main {
             hasError = true;
         }
     }
+    
+    private static String parse(String fileContents) {
+        List<Token> tokens = tokenizeAndReturnTokens(fileContents);
+        Parser parser = new Parser(tokens);
+        try {
+            return parser.parse();
+        } catch (ParseError e) {
+            hasError = true;
+            return null;
+        }
+    }
+    
+    private static Object evaluate(String fileContents) {
+        List<Token> tokens = tokenizeAndReturnTokens(fileContents);
+        Parser parser = new Parser(tokens);
+        try {
+            String ast = parser.parse();
+            Interpreter interpreter = new Interpreter();
+            return interpreter.interpret(ast);
+        } catch (ParseError e) {
+            hasError = true;
+            return null;
+        } catch (RuntimeException e) {
+            System.err.println(e.getMessage());
+            hasError = true;
+            return null;
+        }
+    }
+    
 }
