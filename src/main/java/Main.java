@@ -46,7 +46,7 @@ public class Main {
         } else if (command.equals("evaluate")) {
             Object result = evaluate(fileContents);
             if (result != null) {
-                if (result instanceof Double) {
+            	if (result instanceof Double) {
                     System.out.println(((Double) result).toString().replaceAll("0+$", "").replaceAll("\\.$", ""));
                 } else if (result instanceof Boolean) {
                     System.out.println(result.toString().toLowerCase());
@@ -316,9 +316,7 @@ public class Main {
     }
 
     private static Object evaluateAst(String ast) {
-        while (ast.startsWith("group ")) {
-            ast = ast.substring(6).trim();
-        }
+        ast = ast.trim();
         while (ast.startsWith("(") && ast.endsWith(")")) {
             ast = ast.substring(1, ast.length() - 1).trim();
         }
