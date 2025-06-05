@@ -46,7 +46,11 @@ public class Main {
         } else if (command.equals("evaluate")) {
             Object result = evaluate(fileContents);
             if (result != null) {
-                System.out.println(result.toString().toLowerCase());
+                if (result instanceof Double) {
+                    System.out.println(((Double) result).toString().replaceAll("0+$", "").replaceAll("\\.$", ""));
+                } else {
+                    System.out.println(result.toString().toLowerCase());
+                }
             }
             if (hasError) {
                 System.exit(65);
