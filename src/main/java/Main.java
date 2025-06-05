@@ -334,30 +334,30 @@ public class Main {
      // Handle arithmetic operations
         if (ast.contains("*")) {
             String[] parts = ast.split("\\*");
-            double left = Double.parseDouble(parts[0].trim());
-            double right = Double.parseDouble(parts[1].trim());
+            double left = (double) evaluateAst(parts[0].trim());
+            double right = (double) evaluateAst(parts[1].trim());
             return left * right;
         } else if (ast.contains("/")) {
             String[] parts = ast.split("/");
-            double left = Double.parseDouble(parts[0].trim());
-            double right = Double.parseDouble(parts[1].trim());
+            double left = (double) evaluateAst(parts[0].trim());
+            double right = (double) evaluateAst(parts[1].trim());
             if (right == 0) {
                 throw new ArithmeticException("Error: Division by zero");
             }
             return left / right;
         } else if (ast.contains("+")) {
             String[] parts = ast.split("\\+");
-            double left = Double.parseDouble(parts[0].trim());
-            double right = Double.parseDouble(parts[1].trim());
+            double left = (double) evaluateAst(parts[0].trim());
+            double right = (double) evaluateAst(parts[1].trim());
             return left + right;
         } else if (ast.contains("-")) {
             if (ast.startsWith("-")) {
-                double operand = Double.parseDouble(ast.substring(1).trim());
+            	double operand = (double) evaluateAst(ast.substring(1).trim());
                 return -operand;
             } else {
                 String[] parts = ast.split("-");
-                double left = Double.parseDouble(parts[0].trim());
-                double right = Double.parseDouble(parts[1].trim());
+                double left = (double) evaluateAst(parts[0].trim());
+                double right = (double) evaluateAst(parts[1].trim());
                 return left - right;
             }
         }
@@ -397,7 +397,7 @@ public class Main {
             return ast.substring(1, ast.length() - 1);
         }
 
-        return ast;
+        return Double.parseDouble(ast);
         
     }
     }
