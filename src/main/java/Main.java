@@ -338,10 +338,13 @@ public class Main {
         // Operator precedence handling: * and /
         List<String> operators = List.of(" * ", " / ");
         for (String op : operators) {
-            if (ast.contains(op)) {
-                String[] parts = ast.split(" \\" + op.trim() + " ");
-                double left = (double) evaluateAst(parts[0].trim());
-                double right = (double) evaluateAst(parts[1].trim());
+            int index = ast.lastIndexOf(op.trim()); // Ensure correct operator precedence
+            if (index != -1) {
+                String leftExpr = ast.substring(0, index).trim();
+                String rightExpr = ast.substring(index + op.length()).trim();
+
+                double left = (double) evaluateAst(leftExpr);
+                double right = (double) evaluateAst(rightExpr);
 
                 if (op.equals(" / ") && right == 0) {
                     throw new ArithmeticException("Error: Division by zero");
