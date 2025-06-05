@@ -48,8 +48,6 @@ public class Main {
             if (result != null) {
                 if (result instanceof Double) {
                     System.out.println(((Double) result).toString().replaceAll("0+$", "").replaceAll("\\.$", ""));
-                } else if (result instanceof String && ((String) result).equals("nil")) {
-                    System.out.println("nil");
                 } else {
                     System.out.println(result.toString());
                 }
@@ -304,6 +302,8 @@ public class Main {
             String ast = parser.parse();
             if (ast.matches("\\d+(\\.\\d+)?")) {
                 return Double.parseDouble(ast);
+            } else if (ast.startsWith("\"") && ast.endsWith("\"")) {
+                return ast.substring(1, ast.length() - 1);
             }
             Interpreter interpreter = new Interpreter();
             return interpreter.interpret(ast);
