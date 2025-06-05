@@ -317,9 +317,10 @@ public class Main {
     }
 
     private static Object evaluateAst(String ast) {
-        ast = ast.trim();
+        ast = ast.replaceAll("^group ", "");
         while (ast.startsWith("(") && ast.endsWith(")")) {
             ast = ast.substring(1, ast.length() - 1).trim();
+            ast = ast.replaceAll("^group ", "");
         }
         if (ast.matches("\\d+(\\.\\d+)?")) {
             return Double.parseDouble(ast);
