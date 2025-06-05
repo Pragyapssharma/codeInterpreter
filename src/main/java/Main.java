@@ -42,9 +42,6 @@ public class Main {
             List<Token> tokens = tokenizeAndReturnTokens(fileContents);
             Parser parser = new Parser(tokens);
             String result = parser.parse();
-            if (result.contains(".")) {
-                result = result.replaceAll("0+$", "").replaceAll("\\.$", "");
-            }
             System.out.println(result);
             if (hasError) {
                 System.exit(65);
