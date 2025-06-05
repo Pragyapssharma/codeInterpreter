@@ -75,8 +75,8 @@ class Parser {
             return "(! " + expr + ")";
         } else if (match(TokenType.NUMBER)) {
             String lexeme = previous().lexeme;
-            if (lexeme.contains(".")) {
-                lexeme = lexeme.replaceAll("0+$", "").replaceAll("\\.$", "");
+            if (!lexeme.contains(".")) {
+                lexeme += ".0";
             }
             return lexeme;
         } else if (match(TokenType.STRING)) {
