@@ -343,8 +343,15 @@ public class Main {
                 String leftExpr = ast.substring(0, index).trim();
                 String rightExpr = ast.substring(index + op.length()).trim();
 
-                double left = (double) evaluateAst(leftExpr);
-                double right = (double) evaluateAst(rightExpr);
+                Object leftObj = evaluateAst(leftExpr);
+                Object rightObj = evaluateAst(rightExpr);
+
+                if (!(leftObj instanceof Double) || !(rightObj instanceof Double)) {
+                    throw new RuntimeException("Error: Non-numeric values encountered in arithmetic expression");
+                }
+
+                double left = (Double) leftObj;
+                double right = (Double) rightObj;
 
                 if (op.equals(" / ") && right == 0) {
                     throw new ArithmeticException("Error: Division by zero");
@@ -353,6 +360,7 @@ public class Main {
                 return op.equals(" * ") ? left * right : left / right;
             }
         }
+
 
         // Handle unary negation (-)
         if (ast.startsWith("-")) {
