@@ -320,21 +320,28 @@ public class Main {
     }
 
     private static Object evaluateAst(String ast) {
+        if (ast.startsWith("group ")) {
+            return evaluateAst(ast.substring(6));
+        }
         if (ast.matches("\\d+(\\.\\d+)?")) {
             return Double.parseDouble(ast);
         } else if (ast.startsWith("\"") && ast.endsWith("\"")) {
             return ast.substring(1, ast.length() - 1);
+        } else if (isEmpty(ast)) {
+            return "nil";
         } else if (ast.equals("true")) {
             return true;
         } else if (ast.equals("false")) {
             return false;
         } else if (ast.equals("nil")) {
             return "nil";
-        }else if (ast.startsWith("group ")) {
-            return evaluateAst(ast.substring(6));
         }
         // Handle other expressions
         return ast;
+    }
+
+    private static boolean isEmpty(String ast) {
+        return ast.trim().isEmpty();
     }
     
 }
