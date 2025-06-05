@@ -304,6 +304,7 @@ public class Main {
         Parser parser = new Parser(tokens);
         try {
             String ast = parser.parse();
+            ast = ast.replaceAll("^group ", "");
             return evaluateAst(ast);
         } catch (ParseError e) {
             hasError = true;
