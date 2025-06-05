@@ -73,12 +73,12 @@ class Parser {
         } else if (match(TokenType.BANG)) {
             String expr = factor();
             return "(! " + expr + ")";
-            if (match(TokenType.NUMBER)) {
-                String lexeme = previous().lexeme;
-                if (lexeme.contains(".")) {
-                    lexeme = lexeme.replaceAll("0+$", "").replaceAll("\\.$", "");
-                }
-                return lexeme;
+        } else if (match(TokenType.NUMBER)) {
+            String lexeme = previous().lexeme;
+            if (lexeme.contains(".")) {
+                lexeme = lexeme.replaceAll("0+$", "").replaceAll("\\.$", "");
+            }
+            return lexeme;
         } else if (match(TokenType.STRING)) {
             String lexeme = previous().lexeme;
             return lexeme.substring(1, lexeme.length() - 1);
