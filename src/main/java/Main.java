@@ -304,7 +304,11 @@ public class Main {
         Parser parser = new Parser(tokens);
         try {
             String ast = parser.parse();
-            return evaluateAst(ast);
+            if (ast.startsWith("(") && ast.endsWith(")")) {
+                return evaluateAst(ast.substring(1, ast.length() - 1));
+            } else {
+                return evaluateAst(ast);
+            }
         } catch (ParseError e) {
             hasError = true;
             return null;
@@ -320,8 +324,6 @@ public class Main {
             return Double.parseDouble(ast);
         } else if (ast.startsWith("\"") && ast.endsWith("\"")) {
             return ast.substring(1, ast.length() - 1);
-        } else if (ast.startsWith("(") && ast.endsWith(")")) {
-            return evaluateAst(ast.substring(1, ast.length() - 1).trim());
         } else if (ast.equals("true")) {
             return true;
         } else if (ast.equals("false")) {
@@ -330,8 +332,7 @@ public class Main {
             return "nil";
         }
         // Handle other expressions
-        Interpreter interpreter = new Interpreter();
-        return interpreter.interpret(ast);
+        return ast;
     }
     
 }
