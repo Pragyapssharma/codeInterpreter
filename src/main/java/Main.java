@@ -317,12 +317,25 @@ public class Main {
     }
 
     private static Object evaluateAst(String ast) {
-        ast = ast.replaceAll("^group ", "");
+        ast = ast.trim();
         while (ast.startsWith("(") && ast.endsWith(")")) {
             ast = ast.substring(1, ast.length() - 1).trim();
-            ast = ast.replaceAll("^group ", "");
         }
-        if (ast.matches("\\d+(\\.\\d+)?")) {
+        if (ast.startsWith("-")) {
+            double operand = (double) evaluateAst(ast.substring(1).trim());
+            return -operand;
+        } else if (ast.startsWith("!")) {
+            Object operand = evaluateAst(ast.substring(1).trim());
+            if (operand instanceof Boolean) {
+                return !(Boolean) operand;
+            } else if (operand instanceof Double) {
+                return ((Double) operand) == 0;
+            } else if (operand.equals("nil")) {
+                return true;
+            } else {
+                return false;
+            }
+        } else if (ast.matches("\\d+(\\.\\d+)?")) {
             return Double.parseDouble(ast);
         } else if (ast.startsWith("\"") && ast.endsWith("\"")) {
             return ast.substring(1, ast.length() - 1);
@@ -337,8 +350,5 @@ public class Main {
         return ast;
     }
 
-    private static boolean isEmpty(String ast) {
-        return ast.trim().isEmpty();
-    }
     
 }
