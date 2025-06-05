@@ -338,7 +338,7 @@ public class Main {
         // Operator precedence handling: * and /
         List<String> operators = List.of(" * ", " / ");
         for (String op : operators) {
-            int index = ast.lastIndexOf(op.trim()); // Ensure correct operator precedence
+            int index = ast.lastIndexOf(op.trim()); 
             if (index != -1) {
                 String leftExpr = ast.substring(0, index).trim();
                 String rightExpr = ast.substring(index + op.length()).trim();
@@ -350,8 +350,8 @@ public class Main {
                     throw new RuntimeException("Error: Non-numeric values encountered in arithmetic expression");
                 }
 
-                double left = (Double) leftObj;
-                double right = (Double) rightObj;
+                double left = (double) leftObj;
+                double right = (double) rightObj;
 
                 if (op.equals(" / ") && right == 0) {
                     throw new ArithmeticException("Error: Division by zero");
@@ -361,6 +361,27 @@ public class Main {
             }
         }
 
+        // Handle addition and subtraction
+        operators = List.of(" + ", " - ");
+        for (String op : operators) {
+            int index = ast.lastIndexOf(op.trim()); 
+            if (index != -1) {
+                String leftExpr = ast.substring(0, index).trim();
+                String rightExpr = ast.substring(index + op.length()).trim();
+
+                Object leftObj = evaluateAst(leftExpr);
+                Object rightObj = evaluateAst(rightExpr);
+
+                if (!(leftObj instanceof Double) || !(rightObj instanceof Double)) {
+                    throw new RuntimeException("Error: Non-numeric values encountered in arithmetic expression");
+                }
+
+                double left = (double) leftObj;
+                double right = (double) rightObj;
+
+                return op.equals(" + ") ? left + right : left - right;
+            }
+        }
 
         // Handle unary negation (-)
         if (ast.startsWith("-")) {
@@ -398,18 +419,6 @@ public class Main {
 
         // Fallback for unrecognized expressions
         return ast;
-    }
-    
-    private static boolean isTruthy(Object obj) {
-        if (obj instanceof Boolean) {
-            return (Boolean) obj;
-        } else if (obj instanceof Double) {
-            return ((Double) obj) != 0;
-        } else if (obj.equals("nil")) {
-            return false;
-        } else {
-            return true;
-        }
     }
 
     
