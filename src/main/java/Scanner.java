@@ -178,7 +178,7 @@ public class Scanner {
 
         if (isAtEnd()) {
         	this.hasError = true; 
-            tokens.add(new Token(TokenType.ERROR, "Unterminated string..", null, line));
+            tokens.add(new Token(TokenType.ERROR, "Unterminated string", null, line));
             return;
         }
 
