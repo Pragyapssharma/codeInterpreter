@@ -322,27 +322,43 @@ public class Main {
 
     private static Object evaluateAst(String ast) {
         ast = ast.trim();
-        if (ast.startsWith("(") && ast.endsWith(")")) {
+        
+        // Preserve group logic but ensure proper processing
+        ast = ast.replaceAll("^group ", "");
+        while (ast.startsWith("(") && ast.endsWith(")")) {
             ast = ast.substring(1, ast.length() - 1).trim();
+            ast = ast.replaceAll("^group ", "");
         }
-        if (ast.contains(" * ")) {
-            String[] parts = ast.split(" \\* ");
-            double left = (double) evaluateAst(parts[0].trim());
-            double right = (double) evaluateAst(parts[1].trim());
-            return left * right;
-        } else if (ast.contains(" / ")) {
-            String[] parts = ast.split(" / ");
-            double left = (double) evaluateAst(parts[0].trim());
-            double right = (double) evaluateAst(parts[1].trim());
-            if (right == 0) {
-                // Handle division by zero
-                return null; // or throw an exception
+
+        // Handle numeric values directly
+        if (ast.matches("\\d+(\\.\\d+)?")) {
+            return Double.parseDouble(ast);
+        }
+
+        // Operator precedence handling: * and /
+        List<String> operators = List.of(" * ", " / ");
+        for (String op : operators) {
+            if (ast.contains(op)) {
+                String[] parts = ast.split(" \\" + op.trim() + " ");
+                double left = (double) evaluateAst(parts[0].trim());
+                double right = (double) evaluateAst(parts[1].trim());
+
+                if (op.equals(" / ") && right == 0) {
+                    throw new ArithmeticException("Error: Division by zero");
+                }
+
+                return op.equals(" * ") ? left * right : left / right;
             }
-            return left / right;
-        } else if (ast.startsWith("-")) {
+        }
+
+        // Handle unary negation (-)
+        if (ast.startsWith("-")) {
             double operand = (double) evaluateAst(ast.substring(1).trim());
             return -operand;
-        } else if (ast.startsWith("!")) {
+        }
+
+        // Handle logical NOT (!)
+        if (ast.startsWith("!")) {
             Object operand = evaluateAst(ast.substring(1).trim());
             if (operand instanceof Boolean) {
                 return !(Boolean) operand;
@@ -353,18 +369,23 @@ public class Main {
             } else {
                 return true;
             }
-        } else if (ast.matches("\\d+(\\.\\d+)?")) {
-            return Double.parseDouble(ast);
-        } else if (ast.startsWith("\"") && ast.endsWith("\"")) {
-            return ast.substring(1, ast.length() - 1);
-        } else if (ast.equals("true")) {
+        }
+
+        // Handle Boolean literals
+        if (ast.equals("true")) {
             return true;
         } else if (ast.equals("false")) {
             return false;
         } else if (ast.equals("nil")) {
             return "nil";
         }
-        // Handle other expressions
+
+        // Handle quoted strings
+        if (ast.startsWith("\"") && ast.endsWith("\"")) {
+            return ast.substring(1, ast.length() - 1);
+        }
+
+        // Fallback for unrecognized expressions
         return ast;
     }
     
