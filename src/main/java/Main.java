@@ -49,7 +49,7 @@ public class Main {
                 if (result instanceof Double) {
                     System.out.println(((Double) result).toString().replaceAll("0+$", "").replaceAll("\\.$", ""));
                 } else {
-                    System.out.println(result.toString());
+                    System.out.println(result.toString().toLowerCase());
                 }
             }
             if (hasError) {
@@ -300,15 +300,7 @@ public class Main {
         Parser parser = new Parser(tokens);
         try {
             String ast = parser.parse();
-            if (ast.matches("\\d+(\\.\\d+)?")) {
-                return Double.parseDouble(ast);
-            } else if (ast.startsWith("\"") && ast.endsWith("\"")) {
-                return ast.substring(1, ast.length() - 1);
-            } else if (!ast.startsWith("(") && !ast.startsWith("\"")) {
-                return ast;
-            }
-            Interpreter interpreter = new Interpreter();
-            return interpreter.interpret(ast);
+            return evaluateAst(ast);
         } catch (ParseError e) {
             hasError = true;
             return null;
@@ -317,6 +309,24 @@ public class Main {
             hasError = true;
             return null;
         }
+    }
+
+    private static Object evaluateAst(String ast) {
+        if (ast.matches("\\d+(\\.\\d+)?")) {
+            return Double.parseDouble(ast);
+        } else if (ast.startsWith("\"") && ast.endsWith("\"")) {
+            return ast.substring(1, ast.length() - 1);
+        } else if (ast.startsWith("(") && ast.endsWith(")")) {
+            return evaluateAst(ast.substring(1, ast.length() - 1).trim());
+        } else if (ast.equals("true")) {
+            return true;
+        } else if (ast.equals("false")) {
+            return false;
+        } else if (ast.equals("nil")) {
+            return "nil";
+        }
+        // Handle other expressions
+        return ast;
     }
     
 }
