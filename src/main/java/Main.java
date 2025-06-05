@@ -334,7 +334,7 @@ public class Main {
             } else if (operand.equals("nil")) {
                 return true;
             } else {
-                return false;
+                return true;
             }
         } else if (ast.matches("\\d+(\\.\\d+)?")) {
             return Double.parseDouble(ast);
