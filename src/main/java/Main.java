@@ -302,6 +302,9 @@ public class Main {
         Parser parser = new Parser(tokens);
         try {
             String ast = parser.parse();
+            if (ast.matches("\\d+(\\.\\d+)?")) {
+                return Double.parseDouble(ast);
+            }
             Interpreter interpreter = new Interpreter();
             return interpreter.interpret(ast);
         } catch (ParseError e) {
