@@ -94,7 +94,7 @@ class Parser {
             return "(group " + expr + ")";
         }
 
-        throw new RuntimeException("Invalid input");
+        throw error(peek(), "Invalid input");
     }
 
     // Helper methods
