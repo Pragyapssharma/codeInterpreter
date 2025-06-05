@@ -302,10 +302,10 @@ public class Main {
             String ast = parser.parse();
             if (ast.matches("\\d+(\\.\\d+)?")) {
                 return Double.parseDouble(ast);
-            } else if (ast.startsWith("\"") && ast.endsWith("\"") && ast.length() > 1) {
+            } else if (ast.startsWith("\"") && ast.endsWith("\"")) {
                 return ast.substring(1, ast.length() - 1);
-            } else if (ast.startsWith("\"") && ast.endsWith("\"") && ast.length() == 2) {
-                return "";
+            } else if (!ast.startsWith("(") && !ast.startsWith("\"")) {
+                return ast;
             }
             Interpreter interpreter = new Interpreter();
             return interpreter.interpret(ast);
